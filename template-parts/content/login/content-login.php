@@ -27,25 +27,25 @@ $mi_add_form_login_nonce = wp_create_nonce('mi_form_login_nonce');
                     <?php
                     // Mensagens de erro de login 
                     if (isset($_SESSION['mi_login_error_message']) && $_SESSION['mi_login_error_message']) {
-                        echo mi_dismissible_alert('danger', $_SESSION['mi_login_error_message']);
+                        echo mi_dismissible_alert($_SESSION['mi_login_error_message'], 'danger');
                         unset($_SESSION['mi_login_error_message']);
                     }
 
                     // Mensagens de erro de reset password 
                     if (isset($_SESSION['mi_resetpassword_error_message']) && $_SESSION['mi_resetpassword_error_message']) {
-                        echo mi_dismissible_alert('danger', $_SESSION['mi_resetpassword_error_message']);
+                        echo mi_dismissible_alert($_SESSION['mi_resetpassword_error_message'], 'danger');
                         unset($_SESSION['mi_resetpassword_error_message']);
                     }
 
                     // Mensagens de successo de senha perdida
                     if (isset($_SESSION['mi_lostpassword_success_message']) && $_SESSION['mi_lostpassword_success_message']) {
-                        echo mi_dismissible_alert('success', $_SESSION['mi_lostpassword_success_message']);
+                        echo mi_dismissible_alert($_SESSION['mi_lostpassword_success_message'], 'success');
                         unset($_SESSION['mi_lostpassword_success_message']);
                     }
 
                     // Mensagens de successo de redefinição senha
                     if (isset($_SESSION['mi_resetpassword_success_message']) && $_SESSION['mi_resetpassword_success_message']) {
-                        echo mi_dismissible_alert('success', $_SESSION['mi_resetpassword_success_message']);
+                        echo mi_dismissible_alert($_SESSION['mi_resetpassword_success_message'], 'success');
                         unset($_SESSION['mi_resetpassword_success_message']);
                     }
                     ?>
