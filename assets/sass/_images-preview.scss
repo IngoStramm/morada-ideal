@@ -1,0 +1,13 @@
+.images-preview {
+    .image-preview {
+        max-width: 500px;
+        max-height: 300px;
+        object-fit: cover;
+    }
+    &.images-preview-thumbnail {
+        .image-preview {
+            width: 150px;
+            height: 150px;
+        }
+    }
+}
