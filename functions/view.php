@@ -60,17 +60,16 @@ function mi_alert($text, $type = 'warning')
  */
 function mi_dismissible_alert($message, $type = 'success')
 {
-    if (!$message) {
-        return;
-    }
     $output = '';
-    $output .= '
-    <div class="alert alert-' . $type . ' alert-dismissible d-flex align-items-center gap-2 fade show" role="alert">
+    if ($message) {
+        $output .= '
+        <div class="alert alert-' . $type . ' alert-dismissible d-flex align-items-center gap-2 fade show" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div>' . $message . '</div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    ';
+        </div>
+        ';
+    }
     return $output;
 }
 

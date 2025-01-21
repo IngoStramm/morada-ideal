@@ -427,3 +427,23 @@ function mi_calcula_valor_por_metro($valor, $metro)
     $result = ceil($valor_formatado / $metro_formatado);
     return $result;
 }
+
+function mi_check_edit_imovel_user_permition($post_id)
+{
+    $post_id = isset($_REQUEST['imovel_id']) && $_REQUEST['imovel_id'] ? $_REQUEST['imovel_id'] : null;
+    $check_user = false;
+    if (!$post_id) {
+        // É um novo post
+        $check_user = true;
+    } elseif (current_user_can('manage_options')) {
+        // É um admin
+        $check_user = true;
+    } else {
+        // Usuário é o autor
+        $user_id = get_current_user_id();
+        $post = get_post($post_id);
+        $author_id = $post->post_author;
+        $check_user = $user_id === (int)$author_id;
+    }
+    return $check_user;
+}

@@ -227,7 +227,7 @@ function mi_estado_imovel_tax()
 
     $tax->set_arguments(
         array(
-            'hierarchical' => true,
+            'hierarchical' => false,
         )
     );
 }

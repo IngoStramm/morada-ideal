@@ -388,4 +388,4 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
             <?php } ?>
         </div>
     </div>
-</div>
+</div>;

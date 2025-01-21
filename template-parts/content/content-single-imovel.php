@@ -35,7 +35,12 @@
                 $estado_terms = get_the_terms($post_id, 'estado');
                 $filtro_terms = get_the_terms($post_id, 'filtro');
                 $andar_terms = get_the_terms($post_id, 'andar');
+                $user_permition = mi_check_edit_imovel_user_permition($post_id)
                 ?>
+                <?php if ($user_permition) { ?>
+                    <?php $edit_imovel_url = mi_get_page_url('editimovel') . '?imovel_id=' . $post_id; ?>
+                    <a href="<?php echo $edit_imovel_url; ?>" class="btn btn-warning"><?php _e('Editar', 'mi'); ?></a>
+                <?php } ?>
                 <figure class="post-thumbnail">
                     <?php
                     // Lazy-loading attributes should be skipped for thumbnails since they are immediately in the viewport.
