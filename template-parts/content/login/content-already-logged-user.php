@@ -4,11 +4,11 @@ $current_user = wp_get_current_user();
 <div class="col-md-6">
     <h3 class="mb-3"><?php echo wp_sprintf(__('Você já está logado, %s.', 'mi'), $current_user->display_name); ?></h3>
     <?php
-    $account_page_id = mi_get_option('mi_account_page');
+    $account_page_ul = mi_get_page_url('account');
 
-    if ($account_page_id) { ?>
+    if ($account_page_ul) { ?>
 
-        <a class="btn btn-primary" href="<?php echo get_permalink($account_page_id); ?>"><?php _e('Acesse a sua conta', 'mi'); ?></a>
+        <a class="btn btn-primary" href="<?php echo $account_page_ul; ?>"><?php _e('Acesse a sua conta', 'mi'); ?></a>
 
     <?php } ?>
 
