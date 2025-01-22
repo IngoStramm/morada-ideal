@@ -189,12 +189,12 @@
                     const imagePreview = document.createElement('img');
                     imagePreview.classList.add('image-preview');
                     imagePreview.src = URL.createObjectURL(newFile);
-                    imagesPreviewContainer.append(imagePreview);                    
+                    imagesPreviewContainer.append(imagePreview);
                 }
                 btnClearImage.style.display = 'block';
                 changedThumbnail.value = 'true';
                 console.log('fileInput', fileInput.value);
-                
+
             });
             // fileInput.value = imagePreview.src;
             // const event = new Event('change');
@@ -310,9 +310,9 @@
             valueNames: ['titulo', 'data', 'status']
         };
 
-        const optionsLeads = {
+        const optionsMyImoveis = {
             ...defaultOptions,
-            valueNames: ['nome', 'email', 'titulo', 'data'],
+            valueNames: ['nome', 'data'],
         };
 
         const optionsFollowingTermsAnuncios = {
@@ -370,8 +370,8 @@
         // const tableAnuncios = document.getElementById('table-anuncios');
         // const tableListAnuncios = new List(tableAnuncios, optionsListAnuncios);
 
-        // const tableLeads = document.getElementById('table-leads');
-        // const tableListLeads = new List(tableLeads, optionsLeads);
+        const tableMyImoveis = document.getElementById('my-imoveis');
+        const tableListMyImoveis = new List(tableMyImoveis, optionsMyImoveis);
 
         // const tableFollowingTermsAnuncios = document.getElementById('table-following-terms-anuncios');
         // const tableListFollowingTermsAnuncios = new List(tableFollowingTermsAnuncios, optionsFollowingTermsAnuncios);

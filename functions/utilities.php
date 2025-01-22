@@ -218,7 +218,7 @@ function mi_text_login_btn()
 /**
  * mi_get_page_id
  *
- * @param  string $slug ('login', 'newuser', 'lostpassword', 'resetpassword', 'account', 'editimovel')
+ * @param  string $slug ('login', 'newuser', 'lostpassword', 'resetpassword', 'account', 'editimovel', 'myimoveis')
  * @return string
  */
 function mi_get_page_id($slug)
@@ -264,6 +264,13 @@ function mi_get_page_id($slug)
             $edit_imovel_page_id = mi_get_option('mi_edit_imovel_page');
             if ($edit_imovel_page_id) {
                 $return_id = $edit_imovel_page_id;
+            }
+            break;
+
+        case 'myimoveis':
+            $edit_my_imovel_page_id = mi_get_option('mi_my_imovel_page');
+            if ($edit_my_imovel_page_id) {
+                $return_id = $edit_my_imovel_page_id;
             }
             break;
 
@@ -323,6 +330,13 @@ function mi_get_page_url($slug)
             $edit_imovel_page_id = mi_get_page_id('editimovel');
             if ($edit_imovel_page_id) {
                 $return_url = get_page_link($edit_imovel_page_id);
+            }
+            break;
+
+        case 'myimoveis':
+            $my_imovel_page_id = mi_get_page_id('myimoveis');
+            if ($my_imovel_page_id) {
+                $return_url = get_page_link($my_imovel_page_id);
             }
             break;
 
@@ -428,6 +442,12 @@ function mi_calcula_valor_por_metro($valor, $metro)
     return $result;
 }
 
+/**
+ * mi_check_edit_imovel_user_permition
+ *
+ * @param  string/int $post_id
+ * @return boolean
+ */
 function mi_check_edit_imovel_user_permition($post_id)
 {
     $post_id = isset($_REQUEST['imovel_id']) && $_REQUEST['imovel_id'] ? $_REQUEST['imovel_id'] : null;
@@ -446,4 +466,25 @@ function mi_check_edit_imovel_user_permition($post_id)
         $check_user = $user_id === (int)$author_id;
     }
     return $check_user;
+}
+
+function mi_get_user_imoveis($user_id)
+{
+    $imoveis = get_posts(
+        array(
+            'post_type'             => 'imovel',
+            'posts_per_page'        => -1,
+            'status'                => 'published',
+            'author'                => $user_id,
+            // 'meta_query'            => array(
+            //     'relation'          => 'AND',
+            //     array(
+            //         'key'      => 'wt_author_anuncio_id',
+            //         'value'    => $user_id,
+            //     ),
+            // )
+        )
+    );
+    wp_reset_postdata();
+    return $imoveis;
 }

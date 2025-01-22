@@ -142,6 +142,22 @@ function mi_register_theme_options_metabox()
     ));
 
     $cmb_options->add_field(array(
+        'name'    => esc_html__('Página Meus Imóveis', 'mi'),
+        'id'      => 'mi_my_imovel_page',
+        'type'    => 'select',
+        'options' => function () {
+            $pages = mi_get_pages();
+            $array = [];
+            $array[''] = __('Selecione uma página', 'mi');
+            foreach ($pages as $id => $title) {
+                $array[$id] = $title;
+            }
+            return $array;
+        },
+        'required'      => true
+    ));
+
+    $cmb_options->add_field(array(
         'name' => esc_html__('Imagem padrão', 'mi'),
         'desc' => esc_html__('A imagem padrão será exibido quando o comprador não definir uma imagem para o anúncio.', 'mi'),
         'id'   => 'mi_anuncio_default_image',

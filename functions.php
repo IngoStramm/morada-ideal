@@ -16,9 +16,6 @@ require_once(MI_DIR . '/classes/classes.php');
 // Theme Functions
 require_once(MI_DIR . '/functions/functions.php');
 
-// CMB2
-require_once(MI_DIR . '/cmb2/cmb2.php');
-
 // Style/Scripts include
 require_once(MI_DIR . '/scripts.php');
 
