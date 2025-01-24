@@ -468,6 +468,12 @@ function mi_check_edit_imovel_user_permition($post_id)
     return $check_user;
 }
 
+/**
+ * mi_get_user_imoveis
+ *
+ * @param  string/int $user_id
+ * @return WP_Post
+ */
 function mi_get_user_imoveis($user_id)
 {
     $imoveis = get_posts(
@@ -479,7 +485,7 @@ function mi_get_user_imoveis($user_id)
             // 'meta_query'            => array(
             //     'relation'          => 'AND',
             //     array(
-            //         'key'      => 'wt_author_anuncio_id',
+            //         'key'      => 'mi_author_imovel_id',
             //         'value'    => $user_id,
             //     ),
             // )
@@ -487,4 +493,50 @@ function mi_get_user_imoveis($user_id)
     );
     wp_reset_postdata();
     return $imoveis;
+}
+
+/**
+ * mi_check_imovel_date
+ *
+ * @param  string/int $post_id
+ * @return int
+ */
+function mi_check_imovel_date($post_id)
+{
+    $post = get_post($post_id);
+    $creation_date = date_create($post->post_date);
+    $today = date_create();
+    $interval = date_diff($creation_date, $today);
+    return $interval->d;
+}
+
+/**
+ * mi_get_imoveis_by_price
+ *
+ * @return array
+ */
+function mi_get_imoveis_by_price()
+{
+
+    $args = array(
+        'post_type' => 'imovel',
+        'posts_per_page' => -1, // Get all posts
+    );
+
+    $query = new WP_Query($args);
+    $prices = [];
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_id = get_the_ID();
+            $mi_imovel_preco = get_post_meta($post_id, 'imovel_valor', true);
+            if ($mi_imovel_preco) {
+                $prices[] = floatval($mi_imovel_preco);
+            }
+        }
+
+        wp_reset_postdata(); // Important to reset post data
+    }
+    sort($prices);
+    return $prices;
 }

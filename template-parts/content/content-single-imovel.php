@@ -35,11 +35,14 @@
                 $estado_terms = get_the_terms($post_id, 'estado');
                 $filtro_terms = get_the_terms($post_id, 'filtro');
                 $andar_terms = get_the_terms($post_id, 'andar');
-                $user_permition = mi_check_edit_imovel_user_permition($post_id)
+                $user_permition = mi_check_edit_imovel_user_permition($post_id);
+                $check_imovel_date = mi_check_imovel_date($post_id);
                 ?>
-                <?php if ($user_permition) { ?>
+                <?php if ($user_permition && $check_imovel_date <= 7) { ?>
                     <?php $edit_imovel_url = mi_get_page_url('editimovel') . '?imovel_id=' . $post_id; ?>
                     <a href="<?php echo $edit_imovel_url; ?>" class="btn btn-warning"><?php _e('Editar', 'mi'); ?></a>
+                <?php } else if ($check_imovel_date > 7) { ?>
+                    <?php echo mi_alert(__('Não é mais possível editar o imóvel, já se passaram mais de 7 dias desde a sua criação.', 'mi')) ?>
                 <?php } ?>
                 <figure class="post-thumbnail">
                     <?php
