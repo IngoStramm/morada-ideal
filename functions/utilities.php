@@ -540,3 +540,34 @@ function mi_get_imoveis_by_price()
     sort($prices);
     return $prices;
 }
+
+function mi_remove_url_parameters($url, $params)
+{
+    // Analisar a URL
+    $parsed_url = parse_url($url);
+
+    // Obter a query string
+    parse_str($parsed_url['query'] ?? '', $query_params);
+
+    // Remover os parâmetros especificados
+    foreach ($params as $param) {
+        unset($query_params[$param]);
+    }
+
+    // Reconstruir a query string
+    $new_query_string = http_build_query($query_params);
+
+    // Montar a nova URL
+    $new_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+    if (isset($parsed_url['port'])) {
+        $new_url .= ':' . $parsed_url['port'];
+    }
+    $new_url .= $parsed_url['path'];
+
+    // Adicionar a nova query string, se houver
+    if (!empty($new_query_string)) {
+        $new_url .= '?' . $new_query_string;
+    }
+
+    return $new_url;
+}

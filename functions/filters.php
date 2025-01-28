@@ -1,24 +1,34 @@
 <?php
 
-add_action('pre_get_posts', 'mi_filter_query');
+add_action('pre_get_posts', 'mi_sort_query');
 
 /**
- * mi_filter_query
+ * mi_sort_query
  *
  * @param  mixed $query
  * @return void
  */
-function mi_filter_query($wp_query)
+function mi_sort_query($wp_query)
 {
     // if (!isset($_GET['mi_form_filter_imovel_nonce']) || !wp_verify_nonce($_GET['mi_form_filter_imovel_nonce'], 'mi_form_filter_imovel_nonce')) {
     //     return;
     // }
 
-    if (!isset($_GET['action']) || $_GET['action'] !== 'mi_filter_imovel_form') {
-        return;
-    }
+    // if (!isset($_GET['action']) || $_GET['action'] !== 'mi_sort_imovel_form') {
+    //     return;
+    // }
 
-    if (!isset($_GET['orderby']) || !$_GET['orderby']) {
+    // if (!isset($_GET['orderby']) || !$_GET['orderby']) {
+    //     return;
+    // }
+
+    if (
+        (!isset($_GET['orderby']) || !$_GET['orderby']) &&
+        (!isset($_GET['start-date']) || !$_GET['start-date']) &&
+        (!isset($_GET['end-date']) || !$_GET['end-date']) &&
+        (!isset($_GET['min-price']) || !$_GET['min-price']) &&
+        (!isset($_GET['max-price']) || !$_GET['max-price'])
+    ) {
         return;
     }
 
@@ -71,8 +81,6 @@ function mi_filter_query($wp_query)
             );
         }
 
-        // mi_debug($date_query_array);
-
         if (count($date_query_array) > 0) {
             $wp_query->set('date_query', $date_query_array);
         }
@@ -95,5 +103,6 @@ function mi_filter_query($wp_query)
             );
             $wp_query->set('meta_query', $meta_query);
         }
+
     }
 }

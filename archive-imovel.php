@@ -12,7 +12,7 @@ get_header(); ?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <?php get_template_part('template-parts/filters', 'imovel'); ?>
+            <?php get_template_part('template-parts/sort', 'imovel'); ?>
         </div>
     </div>
     <div class="row">

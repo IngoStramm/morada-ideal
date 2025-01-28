@@ -19,9 +19,16 @@ if ($post_type === 'anuncios' && ($prices && count($prices) > 0)) {
     $max = max($prices);
     $min = min($prices);
 }
-$current_url = explode("?", $_SERVER['REQUEST_URI']);
+$params = array(
+    'orderby',
+    'start-date',
+    'end-date',
+    'action',
+);
+$full_url = $_SERVER['HTTP_REFERER'];
+$reset_url = mi_remove_url_parameters($full_url, $params);
 ?>
-<form class="filters-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 mb-3 w-100" name="filters-form" method="get">
+<form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 mb-3 w-100" name="sort-form" method="get">
 
     <div class="d-flex justify-content-end  align-items-center gap-3 mb-3">
         <select class="form-select" name="orderby" aria-label="<?php _e('Ordenar anúncios', 'mi'); ?>">
@@ -52,9 +59,19 @@ $current_url = explode("?", $_SERVER['REQUEST_URI']);
 
     </div>
 
-    <a class="btn btn-secondary" href="<?php echo $current_url[0]; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
-    <input type="hidden" name="action" value="mi_filter_imovel_form">
+    <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
+    <?php /* ?><input type="hidden" name="action" value="mi_sort_imovel_form"><?php */ ?>
     <?php /* ?><input type="hidden" name="mi_form_filter_imovel_nonce" value="<?php echo $mi_add_form_filter_imovel_nonce; ?>"><?php */ ?>
+
+    <?php
+    $previous_params = $_GET;
+    foreach ($previous_params as $k => $v) {
+        if ($v) { ?>
+            <input type="hidden" name="<?php echo $k ?>" value="<?php echo $v; ?>">
+    <?php }
+    }
+    ?>
+
     <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
 
 </form>
