@@ -60,8 +60,6 @@ $reset_url = mi_remove_url_parameters($full_url, $params);
     </div>
 
     <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
-    <?php /* ?><input type="hidden" name="action" value="mi_sort_imovel_form"><?php */ ?>
-    <?php /* ?><input type="hidden" name="mi_form_filter_imovel_nonce" value="<?php echo $mi_add_form_filter_imovel_nonce; ?>"><?php */ ?>
 
     <?php
     $previous_params = $_GET;

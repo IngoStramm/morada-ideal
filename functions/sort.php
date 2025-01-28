@@ -10,18 +10,6 @@ add_action('pre_get_posts', 'mi_sort_query');
  */
 function mi_sort_query($wp_query)
 {
-    // if (!isset($_GET['mi_form_filter_imovel_nonce']) || !wp_verify_nonce($_GET['mi_form_filter_imovel_nonce'], 'mi_form_filter_imovel_nonce')) {
-    //     return;
-    // }
-
-    // if (!isset($_GET['action']) || $_GET['action'] !== 'mi_sort_imovel_form') {
-    //     return;
-    // }
-
-    // if (!isset($_GET['orderby']) || !$_GET['orderby']) {
-    //     return;
-    // }
-
     if (
         (!isset($_GET['orderby']) || !$_GET['orderby']) &&
         (!isset($_GET['start-date']) || !$_GET['start-date']) &&
