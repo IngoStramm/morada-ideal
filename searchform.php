@@ -6,5 +6,5 @@
         </div>
         <span class="input-group-text"><?php echo mi_get_icon('search'); ?></span>
     </div>
-    <input type="hidden" name="post_type" value="product">
+    <input type="hidden" name="post_type" value="imovel">
 </form>

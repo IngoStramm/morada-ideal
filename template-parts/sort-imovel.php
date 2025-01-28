@@ -61,14 +61,7 @@ $reset_url = mi_remove_url_parameters($full_url, $params);
 
     <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
 
-    <?php
-    $previous_params = $_GET;
-    foreach ($previous_params as $k => $v) {
-        if ($v) { ?>
-            <input type="hidden" name="<?php echo $k ?>" value="<?php echo $v; ?>">
-    <?php }
-    }
-    ?>
+    <?php echo mi_add_query_params_as_inputs(); ?>
 
     <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
 

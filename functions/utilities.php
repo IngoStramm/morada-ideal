@@ -541,6 +541,13 @@ function mi_get_imoveis_by_price()
     return $prices;
 }
 
+/**
+ * mi_remove_url_parameters
+ *
+ * @param  string $url
+ * @param  array $params
+ * @return string
+ */
 function mi_remove_url_parameters($url, $params)
 {
     // Analisar a URL
@@ -570,4 +577,21 @@ function mi_remove_url_parameters($url, $params)
     }
 
     return $new_url;
+}
+
+/**
+ * mi_add_query_params_as_inputs
+ *
+ * @return string
+ */
+function mi_add_query_params_as_inputs()
+{
+    $previous_params = $_GET;
+    $output = '';
+    foreach ($previous_params as $k => $v) {
+        if ($v) {
+            $output .= "<input type='hidden' name='$k' value='$v'>";
+        }
+    }
+    return $output;
 }
