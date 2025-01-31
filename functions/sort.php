@@ -44,7 +44,7 @@ function mi_sort_query($wp_query)
     $end_date = isset($_GET['end-date']) && $_GET['end-date'] ? $_GET['end-date'] : null;
     $min_price = isset($_GET['min-price']) && $_GET['min-price'] ? $_GET['min-price'] : null;
     $max_price = isset($_GET['max-price']) && $_GET['max-price'] ? $_GET['max-price'] : null;
-
+    
     if ((is_home() || is_author() || is_search() || is_archive()) && is_main_query() && !is_admin() && $wp_query->get('post_type') !== 'nav_menu_item') {
         $wp_query->set('orderby', $order_array[$orderby]['orderby']);
         $wp_query->set('order', $order_array[$orderby]['order']);

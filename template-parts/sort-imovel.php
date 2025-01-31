@@ -1,7 +1,7 @@
 <?php
 $post_type = isset($args['post_type']) && $args['post_type'] ? $args['post_type'] : null;
 $mi_add_form_filter_imovel_nonce = wp_create_nonce('mi_form_filter_imovel_nonce');
-$selected = isset($_GET['orderby']) && $_GET['orderby'] ? $_GET['orderby'] : 'date_desc';
+$selected = isset($_GET['orderby']) && $_GET['orderby'] ? $_GET['orderby'] : '';
 $order_options = array(
     'date_desc'             => __('Mais recentes primeiro', 'mi'),
     'date_asc'              => __('Mais antigos primeiro', 'mi'),
@@ -25,13 +25,18 @@ $params = array(
     'end-date',
     'action',
 );
+// $full_url = isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : null;
 $full_url = $_SERVER['HTTP_REFERER'];
 $reset_url = mi_remove_url_parameters($full_url, $params);
+
+mi_unset_params($params);
+
 ?>
 <form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 mb-3 w-100" name="sort-form" method="get">
 
     <div class="d-flex justify-content-end  align-items-center gap-3 mb-3">
         <select class="form-select" name="orderby" aria-label="<?php _e('Ordenar anúncios', 'mi'); ?>">
+            <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Selecione uma opção', 'mi'); ?></option>
             <?php foreach ($order_options as $value => $text) { ?>
                 <option value="<?php echo $value; ?>" <?php echo $selected === $value ? 'selected=""' : '' ?>><?php echo $text; ?></option>
             <?php } ?>
@@ -61,7 +66,7 @@ $reset_url = mi_remove_url_parameters($full_url, $params);
 
     <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
 
-    <?php echo mi_add_query_params_as_inputs(); ?>
+    <?php echo mi_add_query_params_as_inputs($params); ?>
 
     <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
 

@@ -582,16 +582,31 @@ function mi_remove_url_parameters($url, $params)
 /**
  * mi_add_query_params_as_inputs
  *
+ * @param  array $params
  * @return string
  */
-function mi_add_query_params_as_inputs()
+function mi_add_query_params_as_inputs($params)
 {
     $previous_params = $_GET;
     $output = '';
     foreach ($previous_params as $k => $v) {
-        if ($v) {
+        if ($v && !in_array($k, $params)) {
             $output .= "<input type='hidden' name='$k' value='$v'>";
         }
     }
     return $output;
+}
+
+
+/**
+ * mi_unset_params
+ *
+ * @param  array $params
+ * @return void
+ */
+function mi_unset_params($params)
+{
+    foreach ($params as $param) {
+        unset($_GET[$param]);
+    }
 }
