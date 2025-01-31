@@ -11,15 +11,15 @@
 get_header(); ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mb-3">
             <?php get_template_part('template-parts/sort', 'imovel'); ?>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-5">
             <?php get_sidebar('sidebar') ?>
         </div>
-        <div class="col-md-9">
+        <div class="col-lg-9 col-md-7">
             <?php
             if (have_posts()) {
                 // Load posts loop.

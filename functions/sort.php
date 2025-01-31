@@ -10,13 +10,15 @@ add_action('pre_get_posts', 'mi_sort_query');
  */
 function mi_sort_query($wp_query)
 {
-    if (
-        (!isset($_GET['orderby']) || !$_GET['orderby']) &&
-        (!isset($_GET['start-date']) || !$_GET['start-date']) &&
-        (!isset($_GET['end-date']) || !$_GET['end-date']) &&
-        (!isset($_GET['min-price']) || !$_GET['min-price']) &&
-        (!isset($_GET['max-price']) || !$_GET['max-price'])
-    ) {
+    $sort_params = mi_sort_params();
+    $check = false;
+    foreach ($sort_params as $params) {
+        if (isset($_GET[$params]) && $_GET[$params]) {
+            $check = true;
+        }
+    }
+
+    if (!$check) {
         return;
     }
 
@@ -44,7 +46,7 @@ function mi_sort_query($wp_query)
     $end_date = isset($_GET['end-date']) && $_GET['end-date'] ? $_GET['end-date'] : null;
     $min_price = isset($_GET['min-price']) && $_GET['min-price'] ? $_GET['min-price'] : null;
     $max_price = isset($_GET['max-price']) && $_GET['max-price'] ? $_GET['max-price'] : null;
-    
+
     if ((is_home() || is_author() || is_search() || is_archive()) && is_main_query() && !is_admin() && $wp_query->get('post_type') !== 'nav_menu_item') {
         $wp_query->set('orderby', $order_array[$orderby]['orderby']);
         $wp_query->set('order', $order_array[$orderby]['order']);
@@ -91,6 +93,5 @@ function mi_sort_query($wp_query)
             );
             $wp_query->set('meta_query', $meta_query);
         }
-
     }
 }

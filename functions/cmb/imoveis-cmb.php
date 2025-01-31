@@ -28,8 +28,11 @@ function mi_register_imovel_metabox()
         'name'              => esc_html__('Valor', 'mi'),
         // 'desc'              => esc_html__('Valor em Euros (€)', 'mi'),
         'id'                => 'imovel_valor',
-        'type'              => 'text_money',
-        'before_field'      => '€'
+        'type'              => 'text',
+        'before_field'      => '€',
+        'attributes'        => array(
+            'type'          => 'number'
+        )
     ));
 
     $cmb->add_field(array(

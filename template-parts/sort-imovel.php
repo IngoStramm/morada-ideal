@@ -19,22 +19,16 @@ if ($post_type === 'anuncios' && ($prices && count($prices) > 0)) {
     $max = max($prices);
     $min = min($prices);
 }
-$params = array(
-    'orderby',
-    'start-date',
-    'end-date',
-    'action',
-);
+$sort_params = mi_sort_params();
+$filter_params =  mi_filters_params();
+
 // $full_url = isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : null;
 $full_url = $_SERVER['HTTP_REFERER'];
-$reset_url = mi_remove_url_parameters($full_url, $params);
-
-mi_unset_params($params);
-
+$reset_url = mi_remove_url_parameters($full_url, $sort_params);
 ?>
-<form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 mb-3 w-100" name="sort-form" method="get">
+<form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 w-100" name="sort-form" method="get">
 
-    <div class="d-flex justify-content-end  align-items-center gap-3 mb-3">
+    <div class="d-flex justify-content-end  align-items-center gap-3">
         <select class="form-select" name="orderby" aria-label="<?php _e('Ordenar anúncios', 'mi'); ?>">
             <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Selecione uma opção', 'mi'); ?></option>
             <?php foreach ($order_options as $value => $text) { ?>
@@ -46,28 +40,28 @@ mi_unset_params($params);
 
     <div class="d-md-<?php echo $css_display; ?> justify-content-start align-items-center gap-3 mb-4 mb-md-0">
 
-        <label class="form-label flex-shrink-0 mb-2" for="start-date">
+        <label class="form-label flex-shrink-0 mb-0" for="start-date">
             <?php _e('Data inicial', 'mi'); ?>
         </label>
-        <span class="d-flex align-items-start mb-3">
-            <input type="date" class="form-control mb-3 mb-md-0" name="start-date" id="start-date" value="<?php echo $start_date ? $start_date : ''; ?>" />
+        <span class="d-flex align-items-start">
+            <input type="date" class="form-control mb-md-0" name="start-date" id="start-date" value="<?php echo $start_date ? $start_date : ''; ?>" />
             <a href="#" class="clear-input-value link-danger ms-1" data-input="start-date"><i class="bi bi-x"></i></a>
         </span>
 
-        <label class="form-label flex-shrink-0 mb-2" for="end-date">
+        <label class="form-label flex-shrink-0 mb-0" for="end-date">
             <?php _e('Data final', 'mi'); ?>
         </label>
-        <span class="d-flex align-items-start mb-3">
+        <span class="d-flex align-items-start">
             <input type="date" class="form-control" name="end-date" id="end-date" value="<?php echo $end_date ? $end_date : ''; ?>" />
             <a href="#" class="clear-input-value link-danger ms-1" data-input="end-date"><i class="bi bi-x"></i></a>
         </span>
 
     </div>
 
-    <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
-
-    <?php echo mi_add_query_params_as_inputs($params); ?>
-
-    <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
+    <?php
+    echo mi_add_query_params_as_inputs($filter_params);
+    echo mi_search_params();
+    ?>
+    <button class="btn btn-primary"><?php _e('Ordenar', 'mi'); ?></button>
 
 </form>

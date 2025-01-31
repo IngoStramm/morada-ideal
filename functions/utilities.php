@@ -580,6 +580,57 @@ function mi_remove_url_parameters($url, $params)
 }
 
 /**
+ * mi_filters_params
+ *
+ * @return array
+ */
+function mi_filters_params()
+{
+    $params = array(
+        'operacao-term',
+        'tipo-terms',
+        'tipologia-term',
+        'preco-min',
+        'preco-max',
+        'caracteristica-geral-terms',
+        'metragem-imovel-min',
+        'metragem-imovel-max',
+    );
+    return $params;
+}
+
+/**
+ * mi_sort_params
+ *
+ * @return array
+ */
+function mi_sort_params()
+{
+    $params = array(
+        'orderby',
+        'start-date',
+        'end-date',
+        'action',
+    );
+    return $params;
+}
+
+/**
+ * mi_search_params
+ *
+ * @return string
+ */
+function mi_search_params()
+{
+    $params = array(
+        's',
+        'post_type'
+    );
+    $hidden_inputs = mi_add_query_params_as_inputs($params);
+    return $hidden_inputs;
+}
+
+/**
  * mi_add_query_params_as_inputs
  *
  * @param  array $params
@@ -587,11 +638,16 @@ function mi_remove_url_parameters($url, $params)
  */
 function mi_add_query_params_as_inputs($params)
 {
-    $previous_params = $_GET;
     $output = '';
-    foreach ($previous_params as $k => $v) {
-        if ($v && !in_array($k, $params)) {
-            $output .= "<input type='hidden' name='$k' value='$v'>";
+    foreach ($params as $param) {
+        if (isset($_GET[$param]) && $_GET[$param]) {
+            if (is_array($_GET[$param])) {
+                foreach ($_GET[$param] as $v) {
+                    $output .= '<input type="hidden" name="' . $param . '" value="' . $v . '">';
+                }
+            } else {
+                $output .= '<input type="hidden" name="' . $param . '" value="' . $_GET[$param] . '">';
+            }
         }
     }
     return $output;
@@ -609,4 +665,82 @@ function mi_unset_params($params)
     foreach ($params as $param) {
         unset($_GET[$param]);
     }
+}
+
+
+/**
+ * mi_precos_options
+ *
+ * @return array
+ */
+function mi_precos_options()
+{
+    $options = array(
+        100,
+        150,
+        200,
+        250,
+        300,
+        350,
+        400,
+        450,
+        500,
+        550,
+        600,
+        650,
+        700,
+        750,
+        800,
+        850,
+        900,
+        950,
+        1000,
+        1100,
+        1200,
+        1300,
+        1400,
+        1500,
+        1600,
+        1700,
+        1800,
+        1900,
+        2000,
+        2100,
+        2400,
+        2700,
+        3000,
+    );
+    return $options;
+}
+
+/**
+ * mi_metragem_options
+ *
+ * @return array
+ */
+function mi_metragem_options()
+{
+    $options = array(
+        40,
+        60,
+        80,
+        90,
+        100,
+        120,
+        140,
+        160,
+        180,
+        200,
+        250,
+        300,
+        350,
+        400,
+        450,
+        500,
+        600,
+        700,
+        800,
+        900
+    );
+    return $options;
 }
