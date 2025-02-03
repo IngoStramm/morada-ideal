@@ -35,8 +35,8 @@ get_header(); ?>
                     get_template_part('template-parts/content/content-none');
                 }
             }
-            mi_paging_nav();
-            get_footer(); ?>
+            mi_paging_nav(); ?>
         </div>
     </div>
 </div>
+<?php get_footer(); ?>
