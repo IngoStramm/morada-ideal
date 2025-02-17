@@ -141,4 +141,22 @@ function mi_register_imovel_metabox()
         'id'         => 'imovel_cidade',
         'type'       => 'text',
     ));
+
+    $cmb->add_field(array(
+        'name'       => esc_html__('Estado', 'mi'),
+        'id'         => 'imovel_estado',
+        'type'       => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name'       => esc_html__('Latitude', 'mi'),
+        'id'         => 'imovel_lat',
+        'type'       => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name'       => esc_html__('Longitude', 'mi'),
+        'id'         => 'imovel_lng',
+        'type'       => 'text',
+    ));
 }

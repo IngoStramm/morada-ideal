@@ -1,6 +1,8 @@
 (() => {
     'use strict';
 
+    let autocomplete;
+
     // Validação dos forms
     function miFormsValidation() {
         const forms = document.querySelectorAll('.needs-validation');
@@ -558,3 +560,187 @@
     });
 
 })();
+
+function miNormalizeText(input) {
+    // Converte o texto para minúsculas
+    let lowerCaseText = input.toLowerCase();
+
+    // Define um objeto de substituição para caracteres latinos
+    const replacements = {
+        'á': 'a', 'à': 'a', 'ã': 'a', 'â': 'a', 'ä': 'a',
+        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+        'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+        'ó': 'o', 'ò': 'o', 'õ': 'o', 'ô': 'o', 'ö': 'o',
+        'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
+        'ç': 'c', 'ñ': 'n',
+        // Adicione mais substituições conforme necessário
+    };
+
+    // Substitui os caracteres latinos usando uma expressão regular
+    lowerCaseText = lowerCaseText.replace(/[áàãâäéèêëíìîïóòõôöúùûüçñ]/g, match => replacements[match]);
+
+    // Substitui espaços por hífens
+    lowerCaseText = lowerCaseText.replace(/\s+/g, '-');
+
+    return lowerCaseText;
+}
+
+function miInitAutocomplete() {
+    const autocompleteWrappers = document.querySelectorAll('.autocomplete-wrapper');
+    // if (typeof autocompleteInput === undefined || !autocompleteInput) {
+    //     return;
+    // }
+    autocompleteWrappers.forEach(autocompleteWrapper => {
+        const autocompleteInput = autocompleteWrapper.querySelector('.autocomplete');
+        if (typeof autocompleteInput !== undefined && autocompleteInput) {
+            autocomplete = new google.maps.places.Autocomplete(
+                autocompleteInput,
+                {
+                    componentRestrictions: { 'country': ['PT'] },
+                    fields: ['place_id', 'geometry', 'name', 'address_components']
+                }
+            );
+            const autocompleteMessage = autocompleteWrapper.querySelector('.autocomplete-message');
+            autocompleteInput.addEventListener('change', e => {
+            });
+
+            autocomplete.addListener('place_changed', () => miOnPlaceChanged(autocompleteMessage));
+        }
+    });
+}
+
+function miOnPlaceChanged(autocompleteMessage) {
+
+    let place = autocomplete.getPlace();
+    console.log('place', place);
+
+    const miAutocompleteForm = autocompleteMessage.closest('form');
+
+    if (typeof miAutocompleteForm === undefined || !miAutocompleteForm) {
+        console.error('Não foi possível encontrar o formulário do autocomplete');
+        return;
+    }
+
+    const latInput = miAutocompleteForm.querySelector('input[name="lat"]');
+    const lngInput = miAutocompleteForm.querySelector('input[name="lng"]');
+    const stateInput = miAutocompleteForm.querySelector('input[name="imovel_estado"]');
+    const cidadeInput = miAutocompleteForm.querySelector('input[name="imovel_cidade"]');
+    const cepInput = miAutocompleteForm.querySelector('input[name="imovel_codigo_postal"]');
+    const imovelRua = miAutocompleteForm.querySelector('input[name="imovel_rua"]');
+    const autocompleteFormBtn = document.getElementById('new-imovel-form-btn');
+    let regiaoTerms = '';
+
+    if (typeof autocompleteFormBtn !== undefined && autocompleteFormBtn) {
+        autocompleteFormBtn.setAttribute('disabled', '');
+    }
+
+    if (typeof autocompleteMessage !== undefined && autocompleteMessage) {
+        autocompleteMessage.style.display = 'block';
+    }
+
+    if (typeof latInput === undefined || !latInput) {
+        console.error('Não foi possível encontrar o input de latitude');
+        return;
+    }
+
+    if (typeof lngInput === undefined || !lngInput) {
+        console.error('Não foi possível encontrar o input de longitude');
+        return;
+    }
+
+    if (!place.geometry) {
+        document.getElementById('autocomplete').placeholder = 'Digite um endereço';
+        latInput.value = '';
+        lngInput.value = '';
+        if (typeof stateInput !== undefined && tateInput) {
+            stateInput.value = '';
+        }
+        if (typeof cidadeInput !== undefined && cidadeInput) {
+            cidadeInput.value = '';
+        }
+        if (typeof cepInput !== undefined && cepInput) {
+            cepInput.value = '';
+        }
+        if (typeof imovelRua !== undefined && imovelRua) {
+            imovelRua.value = '';
+        }
+        autocompleteMessage.style.display = 'block';
+        if (typeof autocompleteFormBtn !== undefined && autocompleteFormBtn) {
+            autocompleteFormBtn.setAttribute('disabled', '');
+        }
+        const regiaoTable = document.getElementById('table-regiao-imoveis');
+        if (typeof regiaoTable !== undefined && regiaoTable) {
+            const searchInput = regiaoTable.querySelector('[type="search"');
+            if (typeof searchInput !== undefined && searchInput) {
+                regiaoTerms = document.querySelectorAll('[name="regiao-terms[]"]');
+                regiaoTerms.forEach(item => {
+                    item.checked = false;
+                    item.dispatchEvent(new Event('change'));
+                });
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('keyup'));
+            }
+        }
+    } else {
+        lat = place.geometry.location.lat();
+        lng = place.geometry.location.lng();
+        // console.log('lat', lat);
+        // console.log('lng', lng);
+        const estado = place.address_components.filter(item => item.types.includes('administrative_area_level_1'));
+        const cidade = place.address_components.filter(item => item.types.includes('administrative_area_level_2'));
+        const cep = place.address_components.filter(item => item.types.includes('postal_code'));
+        const rua = place.address_components.filter(item => item.types.includes('route'));
+        // console.log('estado', estado[0].short_name);
+        // console.log('cidade', cidade[0].short_name);
+        document.getElementById('autocomplete').innerHTML = place.name;
+        latInput.value = lat;
+        lngInput.value = lng;
+        if (typeof stateInput !== undefined && stateInput) {
+            stateInput.value = estado[0]?.short_name ? estado[0]?.short_name : '';
+        }
+        if (typeof cidadeInput !== undefined && cidadeInput) {
+            cidadeInput.value = cidade[0]?.short_name ? cidade[0]?.short_name : '';
+        }
+        if (typeof cepInput !== undefined && cepInput) {
+            cepInput.value = cep[0]?.short_name ? cep[0]?.short_name : '';
+        }
+
+        if (typeof imovelRua !== undefined && imovelRua) {
+            imovelRua.value = rua[0]?.long_name ? rua[0]?.long_name : '';
+        }
+
+        const regiaoTable = document.getElementById('table-regiao-imoveis');
+        if (typeof regiaoTable !== undefined && regiaoTable) {
+            const searchInput = regiaoTable.querySelector('[type="search"');
+            if (typeof searchInput !== undefined && searchInput) {
+                searchInput.value = estado[0]?.short_name;
+                searchInput.dispatchEvent(new Event('keyup'));
+
+                const normalizeEstado = miNormalizeText(estado[0]?.short_name);
+
+                regiaoTerms = document.querySelectorAll('[name="regiao-terms[]"]');
+                regiaoTerms.forEach(item => {
+                    const normalizeitemName = miNormalizeText(item.getAttribute('data-name'));
+                    if (normalizeEstado === normalizeitemName) {
+                        item.checked = true;
+                        item.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
+        }
+
+
+        autocompleteMessage.style.display = 'none';
+        if (typeof autocompleteFormBtn !== undefined && autocompleteFormBtn) {
+            autocompleteFormBtn.removeAttribute('disabled');
+        }
+    }
+}
+
+function initGoogleApi() {
+    window.addEventListener('load', function () {
+        miInitAutocomplete();
+    });
+}
+
+initGoogleApi();

@@ -63,9 +63,12 @@ $price = $post_id ? get_post_meta($post_id, 'imovel_valor', true) : null;
 $metragem = $post_id ? get_post_meta($post_id, 'imovel_metragem', true) : null;
 $imovel_galeria = $post_id ? get_post_meta($post_id, 'imovel_galeria', true) : array();
 $imovel_rua = $post_id ? get_post_meta($post_id, 'imovel_rua', true) : null;
+$imovel_lat = $post_id ? get_post_meta($post_id, 'imovel_lat', true) : null;
+$imovel_lng = $post_id ? get_post_meta($post_id, 'imovel_lng', true) : null;
 $imovel_numero = $post_id ? get_post_meta($post_id, 'imovel_numero', true) : null;
 $imovel_codigo_postal = $post_id ? get_post_meta($post_id, 'imovel_codigo_postal', true) : null;
 $imovel_cidade = $post_id ? get_post_meta($post_id, 'imovel_cidade', true) : null;
+$imovel_estado = $post_id ? get_post_meta($post_id, 'imovel_estado', true) : null;
 
 $operacao_post_terms = $post_id ? get_the_terms($post_id, 'operacao') : array();
 $operacao_post_terms_id = array();
@@ -173,7 +176,7 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
 
                 <h3 class="mt-5 mb-3"><?php _e('Novo anúncio', 'mi'); ?></h3>
 
-                <form name="new-imovel-form" id="new-imovel-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                <form name="new-imovel-form" id="new-imovel-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="needs-validation new-imovel-form" enctype="multipart/form-data" novalidate>
                     <div class="row">
                         <div class="mb-3">
                             <label for="imovel_title" class="form-label"><?php _e('Título', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
@@ -205,11 +208,6 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
                         <div class="mb-3">
                             <label for="tipo-terms" class="form-label" tabindex="5"><?php _e('Tipo de imóvel', 'mi'); ?></label>
                             <?php echo mi_list_sort_table_terms('tipo', $tipo_terms, $tipo_post_terms_id); ?>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="regiao-terms" class="form-label" tabindex="6"><?php _e('Regiões', 'mi'); ?></label>
-                            <?php echo mi_list_sort_table_terms('regiao', $regiao_terms, $regiao_post_terms_id); ?>
                         </div>
 
                         <div class="mb-3">
@@ -310,6 +308,8 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
                             </select>
                         </div>
 
+                        <?php echo mi_autocomplete_search_input($imovel_lat, $imovel_lng); ?>
+
                         <div class="mb-3">
                             <label for="imovel_rua" class="form-label"><?php _e('Rua', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
                             <input type="text" class="form-control" id="imovel_rua" name="imovel_rua" tabindex="17" value="<?php echo $imovel_rua; ?>" required>
@@ -332,6 +332,17 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
                             <label for="imovel_cidade" class="form-label"><?php _e('Cidade', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
                             <input type="text" class="form-control" id="imovel_cidade" name="imovel_cidade" tabindex="20" value="<?php echo $imovel_cidade; ?>" required>
                             <div class="invalid-feedback"><?php _e('Campo obrigatório', 'mi'); ?></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imovel_estado" class="form-label"><?php _e('Estado', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
+                            <input type="text" class="form-control" id="imovel_estado" name="imovel_estado" tabindex="20" value="<?php echo $imovel_estado; ?>" required>
+                            <div class="invalid-feedback"><?php _e('Campo obrigatório', 'mi'); ?></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regiao-terms" class="form-label" tabindex="6"><?php _e('Regiões', 'mi'); ?></label>
+                            <?php echo mi_list_sort_table_terms('regiao', $regiao_terms, $regiao_post_terms_id); ?>
                         </div>
 
                         <div class="mb-3 mi-file-image-preview">
@@ -366,7 +377,7 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <button type="submit" class="btn btn-primary" tabindex="23"><?php _e('Salvar', 'mi'); ?></button>
+                            <button id="new-imovel-form-btn" type="submit" class="btn btn-primary" tabindex="23"><?php _e('Salvar', 'mi'); ?></button>
 
                             <?php if ($post_id) { ?>
                                 <a href="#" class="btn btn-danger close-imovel" data-bs-toggle="modal" data-bs-target="#close-imovel-modal" tabindex="24">

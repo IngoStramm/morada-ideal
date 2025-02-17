@@ -505,9 +505,19 @@ function mi_check_imovel_date($post_id)
 {
     $post = get_post($post_id);
     $creation_date = date_create($post->post_date);
-    $today = date_create();
-    $interval = date_diff($creation_date, $today);
-    return $interval->d;
+    // mi_debug($creation_date);
+    // $today = date_create();
+    $today = new DateTime();
+    // mi_debug($today);
+    // $interval = date_diff($creation_date, $today);
+    // mi_debug($interval);
+    // return $interval->d;
+    $interval = $today->diff($creation_date);
+    $editable = true;
+    if ($interval->y > 0 || $interval->m > 0 || $interval->d > 7) {
+        $editable = false;
+    }
+    return $editable;
 }
 
 /**
@@ -743,4 +753,28 @@ function mi_metragem_options()
         900
     );
     return $options;
+}
+function mi_get_lat_lng_from_google_by_address($endereco_completo)
+{
+    $geocode_key = mi_get_option('geocode_key');
+    if (!$geocode_key) {
+        return new WP_Error('incomplete_settings', __('Geocode Key não definida.', 'ea-dentistas'));
+    }
+
+    $address_encoded = urlencode($endereco_completo);
+    $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?key=' . $geocode_key . '&address=' . $address_encoded . '&sensor=false');
+
+    $output = json_decode($geocode);
+    if (isset($output->error_message)) {
+        mi_debug($output->error_message);
+        mi_debug($output->status);
+        return;
+    }
+
+    $lat = $output->results[0]->geometry->location->lat;
+    $lng = $output->results[0]->geometry->location->lng;
+    return array(
+        'lat' => $lat,
+        'lng' => $lng
+    );
 }

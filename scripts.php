@@ -20,7 +20,7 @@ function mi_frontend_scripts()
 
     wp_register_script('slick-script', MI_URL . '/assets/js/slick/slick.min.js', array('jquery'), $version, true);
 
-    wp_register_script('morada-ideal-script', MI_URL . '/assets/js/morada-ideal' . $min . '.js', array('jquery', 'bootstrap-script', 'imask-script', 'list-js', 'slick-script'), $version, array('strategy' => 'defer', 'in_footer' => true));
+    wp_register_script('morada-ideal-script', MI_URL . '/assets/js/morada-ideal' . $min . '.js', array('jquery', 'bootstrap-script', 'imask-script', 'list-js', 'slick-script'), $version, true);
 
     wp_enqueue_script('morada-ideal-script');
 
@@ -28,6 +28,16 @@ function mi_frontend_scripts()
         'ajax_url' => admin_url('admin-ajax.php'),
         'plugin_url' => MI_URL
     ));
+
+    $gmaps_key = mi_get_option('gmaps_key');
+
+    if ($gmaps_key) {
+        wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $gmaps_key . '&libraries=places&callback=initGoogleApi&', array(), null,  array(
+            'in_footer' => true,
+            'strategy' => 'defer'
+        ));
+    }
+
     wp_enqueue_style('bootstrap-style', MI_URL . '/assets/css/bootstrap.min.css', array(), $version, 'all');
     wp_enqueue_style('bootstrap-icon-style', MI_URL . '/assets/fonts/bootstrap-icons/bootstrap-icons.min.css', array(), $version, 'all');
     wp_enqueue_style('slick-style', MI_URL . '/assets/js/slick/slick.css', array(), $version, 'all');

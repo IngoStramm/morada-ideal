@@ -157,7 +157,7 @@ function mi_list_sort_table_terms($slug, $terms, $post_terms_id, $checkbox = tru
             $output .= '
                     <tr>
                         <td scope="row" class="text-center" width="70px">
-                            <input class="form-check-input" type="' . $type_input . '" value="' . $term->term_id . '" name="' . $name_input . '" id="term-' . $term->term_id . '" ' . $parent_checked . '>
+                            <input class="form-check-input" type="' . $type_input . '" value="' . $term->term_id . '" name="' . $name_input . '" id="term-' . $term->term_id . '" data-name="' . $term->name . '" ' . $parent_checked . '>
                         </td>
                         <td>
                             <div class="form-check">
@@ -171,7 +171,7 @@ function mi_list_sort_table_terms($slug, $terms, $post_terms_id, $checkbox = tru
                     $output .= '
                     <tr>
                         <td scope="row" class="text-center">
-                            <input class="form-check-input" type="' . $type_input . '" value="' .  $term2->term_id . '" name="' . $name_input . '" id="term-' . $term2->term_id . '" data-parent="term-' . $term2->parent . '" ' . $child_checked . '>
+                            <input class="form-check-input" type="' . $type_input . '" value="' .  $term2->term_id . '" name="' . $name_input . '" id="term-' . $term2->term_id . '" data-parent="term-' . $term2->parent . '" data-name="' . $term2->name . '" ' . $child_checked . '>
                         </td>
                         <td class="child-term">
                             <div class="form-check">
@@ -191,6 +191,35 @@ function mi_list_sort_table_terms($slug, $terms, $post_terms_id, $checkbox = tru
             </table>
             <ul class="pagination"></ul>
         </div>
+    </div>
+    ';
+    return $output;
+}
+
+
+/**
+ * mi_autocomplete_search_input
+ *
+ * @param  string $imovel_lat
+ * @param  string $imovel_lng
+ * @return string
+ */
+function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
+{
+    $output = '';
+    $output .= '
+    <div class="mb-3 autocomplete-wrapper">
+        <label class="form-label">' . __('Pesquisar endereço', 'mi') . '</label>
+        <div class="input-group">
+            <div class="form-floating">
+                <input type="search" class="form-control form-control-sm search autocomplete" id="autocomplete" name="s" tabindex="17">
+                <label for="autocomplete" class="form-label">' . __('Endereço do imóvel', 'mi') . '</label>
+            </div>
+            <span class="input-group-text">' . mi_get_icon('search') . '</span>
+        </div>
+        <div id="autocomplete-message" class="autocomplete-message">' . __('Digite um endereço válido para fazer a pesquisa.', 'mi') . '</div>
+        <input type="hidden" value="' . $imovel_lat . '" name="lat" />
+        <input type="hidden" value="' . $imovel_lng . '" name="lng" />
     </div>
     ';
     return $output;

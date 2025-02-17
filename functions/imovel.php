@@ -204,6 +204,30 @@ function mi_imovel_form_handle()
     }
     $imovel_cidade = isset($_POST['imovel_cidade']) && $_POST['imovel_cidade'] ? $_POST['imovel_cidade'] : null;
 
+    if (!isset($_POST['imovel_estado']) || !$_POST['imovel_estado']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Estado inválido.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_estado = isset($_POST['imovel_estado']) && $_POST['imovel_estado'] ? $_POST['imovel_estado'] : null;
+
+    if (!isset($_POST['lat']) || !$_POST['lat']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Estado inválido.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_lat = isset($_POST['lat']) && $_POST['lat'] ? $_POST['lat'] : null;
+
+    if (!isset($_POST['lng']) || !$_POST['lng']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Estado inválido.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_lng = isset($_POST['lng']) && $_POST['lng'] ? $_POST['lng'] : null;
+
     $imovel_image = $_FILES['imovel_image'];
     // if ($imovel_image['tmp_name']) {
     //     mi_debug($imovel_image['name']);
@@ -237,6 +261,9 @@ function mi_imovel_form_handle()
             'imovel_numero' => $imovel_numero,
             'imovel_codigo_postal' => $imovel_codigo_postal,
             'imovel_cidade' => $imovel_cidade,
+            'imovel_estado' => $imovel_estado,
+            'imovel_lat' => $imovel_lat,
+            'imovel_lng' => $imovel_lng,
         ),
     );
 

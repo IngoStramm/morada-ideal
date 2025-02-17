@@ -22,7 +22,7 @@ function mi_sort_query($wp_query)
         return;
     }
 
-    $orderby = $_GET['orderby'];
+    $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'date_desc';
     $order_array = array(
         'date_asc' => array(
             'orderby'   => 'date',
