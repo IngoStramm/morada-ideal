@@ -206,13 +206,20 @@ function mi_list_sort_table_terms($slug, $terms, $post_terms_id, $checkbox = tru
  */
 function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
 {
+    $search = isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : null;
+    if (!$imovel_lat) {
+        $imovel_lat = isset($_GET['lat']) && $_GET['lat'] ? $_GET['lat'] : null;
+    }
+    if (!$imovel_lng) {
+        $imovel_lng = isset($_GET['lng']) && $_GET['lng'] ? $_GET['lng'] : null;
+    }
     $output = '';
     $output .= '
     <div class="mb-3 autocomplete-wrapper">
         <label class="form-label">' . __('Pesquisar endereço', 'mi') . '</label>
         <div class="input-group">
             <div class="form-floating">
-                <input type="search" class="form-control form-control-sm search autocomplete" id="autocomplete" name="s" tabindex="17">
+                <input type="search" class="form-control form-control-sm search autocomplete" id="autocomplete" name="search" value="' . $search . '" tabindex="17">
                 <label for="autocomplete" class="form-label">' . __('Endereço do imóvel', 'mi') . '</label>
             </div>
             <span class="input-group-text">' . mi_get_icon('search') . '</span>

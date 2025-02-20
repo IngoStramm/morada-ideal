@@ -54,7 +54,7 @@ function mi_imovel_form_handle()
 
     if (!isset($_POST['imovel_price']) || !$_POST['imovel_price']) {
 
-        $_SESSION['mi_imovel_error_message'] = __('Título inválido.', 'mi');
+        $_SESSION['mi_imovel_error_message'] = __('Preço inválido.', 'mi');
         wp_safe_redirect($edit_novo_imovel_link);
         exit;
     }

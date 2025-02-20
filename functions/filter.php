@@ -10,6 +10,18 @@ add_action('pre_get_posts', 'mi_filter_query');
  */
 function mi_filter_query($wp_query)
 {
+    if (!is_main_query() || is_admin()) {
+        return;
+    }
+
+    if (!is_home() && !is_author() && !is_search() && !is_archive()) {
+        return;
+    }
+
+    if ($wp_query->get('post_type') === 'nav_menu_item') {
+        return;
+    }
+
     $filter_params = mi_filters_params();
     $check = false;
     foreach ($filter_params as $params) {
@@ -22,9 +34,14 @@ function mi_filter_query($wp_query)
         return;
     }
 
+    $search = isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : null;
+    $lat = isset($_GET['lat']) && $_GET['lat'] ? $_GET['lat'] : null;
+    $lng = isset($_GET['lng']) && $_GET['lng'] ? $_GET['lng'] : null;
+
     $tipo_terms = isset($_GET['tipo-terms']) && $_GET['tipo-terms'] ? $_GET['tipo-terms'] : null;
     $tipologia_term = isset($_GET['tipologia-term']) && $_GET['tipologia-term'] ? $_GET['tipologia-term'] : null;
     $operacao_term = isset($_GET['operacao-term']) && $_GET['operacao-term'] ? $_GET['operacao-term'] : null;
+    $caracteristica_geral_terms = isset($_GET['caracteristica-geral-terms']) && $_GET['caracteristica-geral-terms'] ? $_GET['caracteristica-geral-terms'] : null;
 
     $preco_max = isset($_GET['preco-max']) && $_GET['preco-max'] ? $_GET['preco-max'] : null;
     $preco_min = isset($_GET['preco-min']) && $_GET['preco-min'] ? $_GET['preco-min'] : null;
@@ -32,70 +49,126 @@ function mi_filter_query($wp_query)
     $metragem_imovel_max = isset($_GET['metragem-imovel-max']) && $_GET['metragem-imovel-max'] ? $_GET['metragem-imovel-max'] : null;
     $metragem_imovel_min = isset($_GET['metragem-imovel-min']) && $_GET['metragem-imovel-min'] ? $_GET['metragem-imovel-min'] : null;
 
-    if ((is_home() || is_author() || is_search() || is_archive()) && is_main_query() && !is_admin() && $wp_query->get('post_type') !== 'nav_menu_item') {
-
-        if ($tipo_terms || $tipologia_term || $operacao_term) {
-            $tax_query = array(
-                'relation' => 'AND'
-            );
-            if ($operacao_term) {
-                $tax_query[] = array(
-                    'taxonomy'      => 'operacao',
-                    'field'         => 'term_id',
-                    'terms'         => $operacao_term,
-                );
-            }
-            if ($tipo_terms) {
-                $tax_query[] = array(
-                    'taxonomy'      => 'tipo',
-                    'field'         => 'term_id',
-                    'terms'         => $tipo_terms,
-                );
-            }
-            if ($tipologia_term) {
-                $tax_query[] = array(
-                    'taxonomy'      => 'tipologia',
-                    'field'         => 'term_id',
-                    'terms'         => $tipologia_term,
-                );
-            }
-            $wp_query->set('tax_query', $tax_query);
-        }
-        $meta_query = array(
+    if ($tipo_terms || $tipologia_term || $operacao_term || $caracteristica_geral_terms) {
+        $tax_query = array(
             'relation' => 'AND'
         );
-        if ($preco_min) {
-            $meta_query[] = array(
-                'key' => 'imovel_valor',
-                'value' => floatval($preco_min),
-                'compare' => '>=',
-                'type' => 'numeric'
+        if ($operacao_term) {
+            $tax_query[] = array(
+                'taxonomy'      => 'operacao',
+                'field'         => 'term_id',
+                'terms'         => $operacao_term,
             );
         }
-        if ($preco_max) {
-            $meta_query[] = array(
-                'key' => 'imovel_valor',
-                'value' => floatval($preco_max),
-                'compare' => '<=',
-                'type' => 'numeric'
+        if ($tipo_terms) {
+            $tax_query[] = array(
+                'taxonomy'      => 'tipo',
+                'field'         => 'term_id',
+                'terms'         => $tipo_terms,
             );
         }
-        if ($metragem_imovel_min) {
-            $meta_query[] = array(
-                'key' => 'imovel_metragem',
-                'value' => floatval($metragem_imovel_min),
-                'compare' => '>=',
-                'type' => 'numeric'
+        if ($tipologia_term) {
+            $tax_query[] = array(
+                'taxonomy'      => 'tipologia',
+                'field'         => 'term_id',
+                'terms'         => $tipologia_term,
             );
         }
-        if ($metragem_imovel_max) {
-            $meta_query[] = array(
-                'key' => 'imovel_metragem',
-                'value' => floatval($metragem_imovel_max),
-                'compare' => '<=',
-                'type' => 'numeric'
+        if ($caracteristica_geral_terms) {
+            $tax_query[] = array(
+                'taxonomy'      => 'caracteristica-geral',
+                'field'         => 'term_id',
+                'terms'         => $caracteristica_geral_terms,
+                'operator'      => 'IN'
             );
         }
-        $wp_query->set('meta_query', $meta_query);
+        $wp_query->set('tax_query', $tax_query);
     }
+    $meta_query = array(
+        'relation' => 'AND'
+    );
+    $address_meta = array(
+        'relation' => 'OR'
+    );
+    if ($search) {
+        $address_meta[] = array(
+            'key' => 'imovel_rua',
+            'value' => $search,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($search) {
+        $address_meta[] = array(
+            'key' => 'imovel_codigo_postal',
+            'value' => $search,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($search) {
+        $address_meta[] = array(
+            'key' => 'imovel_cidade',
+            'value' => $search,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($search) {
+        $address_meta[] = array(
+            'key' => 'imovel_estado',
+            'value' => $search,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($lat) {
+        $address_meta[] = array(
+            'key' => 'imovel_lat',
+            'value' => $lat,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($lng) {
+        $address_meta[] = array(
+            'key' => 'imovel_lng',
+            'value' => $lng,
+            'compare' => 'LIKE',
+        );
+    }
+    $filters_meta = array(
+        'relation' => 'AND'
+    );
+    if ($preco_min) {
+        $filters_meta[] = array(
+            'key' => 'imovel_valor',
+            'value' => floatval($preco_min),
+            'compare' => '>=',
+            'type' => 'numeric'
+        );
+    }
+    if ($preco_max) {
+        $filters_meta[] = array(
+            'key' => 'imovel_valor',
+            'value' => floatval($preco_max),
+            'compare' => '<=',
+            'type' => 'numeric'
+        );
+    }
+    if ($metragem_imovel_min) {
+        $filters_meta[] = array(
+            'key' => 'imovel_metragem',
+            'value' => floatval($metragem_imovel_min),
+            'compare' => '>=',
+            'type' => 'numeric'
+        );
+    }
+    if ($metragem_imovel_max) {
+        $filters_meta[] = array(
+            'key' => 'imovel_metragem',
+            'value' => floatval($metragem_imovel_max),
+            'compare' => '<=',
+            'type' => 'numeric'
+        );
+    }
+    $meta_query[] = $address_meta;
+    $meta_query[] = $filters_meta;
+
+    $wp_query->set('meta_query', $meta_query);
 }

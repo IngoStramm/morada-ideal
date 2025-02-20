@@ -605,6 +605,9 @@ function mi_filters_params()
         'caracteristica-geral-terms',
         'metragem-imovel-min',
         'metragem-imovel-max',
+        'search',
+        'lat',
+        'lng',
     );
     return $params;
 }
@@ -634,7 +637,9 @@ function mi_search_params()
 {
     $params = array(
         's',
-        'post_type'
+        'post_type',
+        'lat',
+        'lng'
     );
     $hidden_inputs = mi_add_query_params_as_inputs($params);
     return $hidden_inputs;

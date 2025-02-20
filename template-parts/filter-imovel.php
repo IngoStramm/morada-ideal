@@ -6,6 +6,9 @@ $reset_url = mi_remove_url_parameters($full_url, $filter_params);
 ?>
 
 <form class="d-flex flex-column align-items-lg-stretch justify-content-between gap-2" role="filter" method="get" name="filter-imoveis">
+
+    <?php echo mi_autocomplete_search_input(); ?>
+    
     <?php
     $operacao_terms = get_terms(array(
         'taxonomy'   => 'operacao',
