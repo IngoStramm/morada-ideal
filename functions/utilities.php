@@ -608,6 +608,10 @@ function mi_filters_params()
         'search',
         'lat',
         'lng',
+        'imovel_estado',
+        'imovel_cidade',
+        'imovel_codigo_postal',
+        'imovel_rua',
     );
     return $params;
 }
@@ -759,6 +763,13 @@ function mi_metragem_options()
     );
     return $options;
 }
+
+/**
+ * mi_get_lat_lng_from_google_by_address
+ *
+ * @param  string $endereco_completo
+ * @return array
+ */
 function mi_get_lat_lng_from_google_by_address($endereco_completo)
 {
     $geocode_key = mi_get_option('geocode_key');
@@ -782,4 +793,49 @@ function mi_get_lat_lng_from_google_by_address($endereco_completo)
         'lat' => $lat,
         'lng' => $lng
     );
+}
+
+/**
+ * mi_get_imoveis
+ *
+ * @return array
+ */
+function mi_get_imoveis()
+{
+    global $wp_query;
+    $posts = $wp_query->posts;
+    $imoveis = [];
+    if ($posts) {
+        foreach ($posts as $post) {
+            $post_id = $post->ID;
+            // pegar a url da imagem destacada
+
+            $title = get_the_title($post_id);
+            $thumbnail = get_the_post_thumbnail_url($post_id, 'medium');
+            $imovel_valor = get_post_meta($post_id, 'imovel_valor', true);
+            $imovel_metragem = get_post_meta($post_id, 'imovel_metragem', true);
+            $imovel_rua = get_post_meta($post_id, 'imovel_rua', true);
+            $imovel_numero = get_post_meta($post_id, 'imovel_numero', true);
+            $imovel_cidade = get_post_meta($post_id, 'imovel_cidade', true);
+            $imovel_estado = get_post_meta($post_id, 'imovel_estado', true);
+            $imovel_codigo_postal = get_post_meta($post_id, 'imovel_codigo_postal', true);
+            $imovel_lat = get_post_meta($post_id, 'imovel_lat', true);
+            $imovel_lng = get_post_meta($post_id, 'imovel_lng', true);
+            $imoveis[$post_id] = array(
+                'post_id'                   => $post_id,
+                'title'                     => $title,
+                'thumbnail'                 => $thumbnail,
+                'valor'                     => $imovel_valor,
+                'metragem'                  => $imovel_metragem,
+                'rua'                       => $imovel_rua,
+                'numero'                    => $imovel_numero,
+                'cidade'                    => $imovel_cidade,
+                'estado'                    => $imovel_estado,
+                'codigo_postal'             => $imovel_codigo_postal,
+                'lat'                       => $imovel_lat,
+                'lng'                       => $imovel_lng,
+            );
+        }
+    }
+    return $imoveis;
 }

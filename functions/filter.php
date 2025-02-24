@@ -37,6 +37,10 @@ function mi_filter_query($wp_query)
     $search = isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : null;
     $lat = isset($_GET['lat']) && $_GET['lat'] ? $_GET['lat'] : null;
     $lng = isset($_GET['lng']) && $_GET['lng'] ? $_GET['lng'] : null;
+    $imovel_estado = isset($_GET['imovel_estado']) && $_GET['imovel_estado'] ? $_GET['imovel_estado'] : null;
+    $imovel_cidade = isset($_GET['imovel_cidade']) && $_GET['imovel_cidade'] ? $_GET['imovel_cidade'] : null;
+    $imovel_codigo_postal = isset($_GET['imovel_codigo_postal']) && $_GET['imovel_codigo_postal'] ? $_GET['imovel_codigo_postal'] : null;
+    $imovel_rua = isset($_GET['imovel_rua']) && $_GET['imovel_rua'] ? $_GET['imovel_rua'] : null;
 
     $tipo_terms = isset($_GET['tipo-terms']) && $_GET['tipo-terms'] ? $_GET['tipo-terms'] : null;
     $tipologia_term = isset($_GET['tipologia-term']) && $_GET['tipologia-term'] ? $_GET['tipologia-term'] : null;
@@ -84,12 +88,10 @@ function mi_filter_query($wp_query)
         }
         $wp_query->set('tax_query', $tax_query);
     }
-    $meta_query = array(
-        'relation' => 'AND'
-    );
     $address_meta = array(
         'relation' => 'OR'
     );
+    // procura pelo que for digitado no campo de pesquisa
     if ($search) {
         $address_meta[] = array(
             'key' => 'imovel_rua',
@@ -115,6 +117,35 @@ function mi_filter_query($wp_query)
         $address_meta[] = array(
             'key' => 'imovel_estado',
             'value' => $search,
+            'compare' => 'LIKE',
+        );
+    }
+    // procura por cada campo de endereço
+    if ($imovel_rua) {
+        $address_meta[] = array(
+            'key' => 'imovel_rua',
+            'value' => $imovel_rua,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($imovel_codigo_postal) {
+        $address_meta[] = array(
+            'key' => 'imovel_codigo_postal',
+            'value' => $imovel_codigo_postal,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($imovel_cidade) {
+        $address_meta[] = array(
+            'key' => 'imovel_cidade',
+            'value' => $imovel_cidade,
+            'compare' => 'LIKE',
+        );
+    }
+    if ($imovel_estado) {
+        $address_meta[] = array(
+            'key' => 'imovel_estado',
+            'value' => $imovel_estado,
             'compare' => 'LIKE',
         );
     }
@@ -167,7 +198,12 @@ function mi_filter_query($wp_query)
             'type' => 'numeric'
         );
     }
-    $meta_query[] = $address_meta;
+    $meta_query = array(
+        'relation' => 'AND'
+    );
+    if (strtolower($search) !== 'portugal') {
+        $meta_query[] = $address_meta;
+    }
     $meta_query[] = $filters_meta;
 
     $wp_query->set('meta_query', $meta_query);

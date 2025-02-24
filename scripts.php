@@ -7,6 +7,7 @@ function mi_frontend_scripts()
 
     $min = (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1', '10.0.0.3'))) ? '' : '.min';
     $version = mi_version();
+    $imoveis = mi_get_imoveis();
 
     if (empty($min)) :
         wp_enqueue_script('morada-ideal-livereload', 'http://localhost:35729/livereload.js?snipver=1', array(), null, true);
@@ -26,7 +27,10 @@ function mi_frontend_scripts()
 
     wp_localize_script('morada-ideal-script', 'ajax_object', array(
         'ajax_url' => admin_url('admin-ajax.php'),
-        'plugin_url' => MI_URL
+        'plugin_url' => MI_URL,
+        'imoveis' => $imoveis,
+        'lat' => isset($_GET['lat']) ? $_GET['lat'] : null,
+        'lng' => isset($_GET['lng']) ? $_GET['lng'] : null,
     ));
 
     $gmaps_key = mi_get_option('gmaps_key');

@@ -23,7 +23,7 @@ $sort_params = mi_sort_params();
 $filter_params =  mi_filters_params();
 
 // $full_url = isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : null;
-$full_url = $_SERVER['HTTP_REFERER'];
+$full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $reset_url = mi_remove_url_parameters($full_url, $sort_params);
 ?>
 <form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 w-100" name="sort-form" method="get">
@@ -60,7 +60,7 @@ $reset_url = mi_remove_url_parameters($full_url, $sort_params);
 
     <?php
     echo mi_add_query_params_as_inputs($filter_params);
-    echo mi_search_params();
+    // echo mi_search_params();
     ?>
     <button class="btn btn-primary"><?php _e('Ordenar', 'mi'); ?></button>
 

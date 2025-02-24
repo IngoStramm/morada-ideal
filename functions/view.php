@@ -213,6 +213,10 @@ function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
     if (!$imovel_lng) {
         $imovel_lng = isset($_GET['lng']) && $_GET['lng'] ? $_GET['lng'] : null;
     }
+    $imovel_estado = isset($_GET['imovel_estado']) && $_GET['imovel_estado'] ? $_GET['imovel_estado'] : null;
+    $imovel_cidade = isset($_GET['imovel_cidade']) && $_GET['imovel_cidade'] ? $_GET['imovel_cidade'] : null;
+    $imovel_codigo_postal = isset($_GET['imovel_codigo_postal']) && $_GET['imovel_codigo_postal'] ? $_GET['imovel_codigo_postal'] : null;
+    $imovel_rua = isset($_GET['imovel_rua']) && $_GET['imovel_rua'] ? $_GET['imovel_rua'] : null;
     $output = '';
     $output .= '
     <div class="mb-3 autocomplete-wrapper">
@@ -227,6 +231,10 @@ function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
         <div id="autocomplete-message" class="autocomplete-message">' . __('Digite um endereço válido para fazer a pesquisa.', 'mi') . '</div>
         <input type="hidden" value="' . $imovel_lat . '" name="lat" />
         <input type="hidden" value="' . $imovel_lng . '" name="lng" />
+        <input type="hidden" value="' . $imovel_estado . '" name="imovel_estado" />
+        <input type="hidden" value="' . $imovel_cidade . '" name="imovel_cidade" />
+        <input type="hidden" value="' . $imovel_codigo_postal . '" name="imovel_codigo_postal" />
+        <input type="hidden" value="' . $imovel_rua . '" name="imovel_rua" />
     </div>
     ';
     return $output;

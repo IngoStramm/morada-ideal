@@ -1,14 +1,34 @@
 <?php
 $sort_params = mi_sort_params();
 $filter_params =  mi_filters_params();
-$full_url = $_SERVER['HTTP_REFERER'];
+// $full_url = $_SERVER['HTTP_REFERER'];
+$full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$has_params = parse_url($full_url, PHP_URL_QUERY);
 $reset_url = mi_remove_url_parameters($full_url, $filter_params);
+$reset_url = mi_remove_url_parameters($reset_url, array('view'));
+$mapa_view_url = $has_params ? $full_url . '&view=map' : $full_url . '?view=map';
+$lista_view_url = mi_remove_url_parameters($full_url, array('view'));
 ?>
 
 <form class="d-flex flex-column align-items-lg-stretch justify-content-between gap-2" role="filter" method="get" name="filter-imoveis">
 
     <?php echo mi_autocomplete_search_input(); ?>
-    
+    <?php
+    $mapstatic_key = mi_get_option('mapstatic_key');
+    $imovel_lat = isset($_GET['lat']) && $_GET['lat'] ? $_GET['lat'] : null;
+    $imovel_lng = isset($_GET['lng']) && $_GET['lng'] ? $_GET['lng'] : null;
+    if ($mapstatic_key && $imovel_lat && $imovel_lng) {
+        if (!isset($_GET['view']) || $_GET['view'] !== 'map') {
+            $static_img_src = "
+            https://maps.googleapis.com/maps/api/staticmap?size=350x350&center=$imovel_lat,$imovel_lng&zoom=12&format=png&maptype=roadmap&language=pt&key=$mapstatic_key";
+            echo "<img class='img-fluid' src='$static_img_src' />";
+    ?>
+            <a href="<?php echo $mapa_view_url; ?>" class="btn btn-primary"><?php _e('Ver mapa', 'mi'); ?></a>
+        <?php } else { ?>
+            <a href="<?php echo $lista_view_url; ?>" class="btn btn-primary"><?php _e('Ver lista', 'mi'); ?></a>
+    <?php }
+    } ?>
+
     <?php
     $operacao_terms = get_terms(array(
         'taxonomy'   => 'operacao',
@@ -146,7 +166,7 @@ $reset_url = mi_remove_url_parameters($full_url, $filter_params);
 
     <?php
     echo mi_add_query_params_as_inputs($sort_params);
-    echo mi_search_params();
+    // echo mi_search_params();
     ?>
     <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
     <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>

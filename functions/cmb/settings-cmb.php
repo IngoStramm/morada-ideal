@@ -181,4 +181,11 @@ function mi_register_theme_options_metabox()
         'type'    => 'text',
     ));
 
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Maps Static API Key', 'mi'),
+        'description'    => 'Acesse o <strong>Google Console</strong> para ativar a API e criar a Key: <a href="https://console.cloud.google.com/" target="_blank">clique aqui</a>.',
+        'id'      => 'mapstatic_key',
+        'type'    => 'text',
+    ));
+
 }
