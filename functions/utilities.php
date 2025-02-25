@@ -808,8 +808,7 @@ function mi_get_imoveis()
     if ($posts) {
         foreach ($posts as $post) {
             $post_id = $post->ID;
-            // pegar a url da imagem destacada
-
+            $post_url = get_post_permalink($post_id);
             $title = get_the_title($post_id);
             $thumbnail = get_the_post_thumbnail_url($post_id, 'medium');
             $imovel_valor = get_post_meta($post_id, 'imovel_valor', true);
@@ -819,21 +818,45 @@ function mi_get_imoveis()
             $imovel_cidade = get_post_meta($post_id, 'imovel_cidade', true);
             $imovel_estado = get_post_meta($post_id, 'imovel_estado', true);
             $imovel_codigo_postal = get_post_meta($post_id, 'imovel_codigo_postal', true);
+
+            $imovel_operacao = get_post_meta($post_id, 'imovel_operacao', true);
+            $imovel_tipologias = get_the_terms($post_id, 'tipologia');
+            $imovel_caracteristicas_gerais = get_the_terms($post_id, 'caracteristica-geral');
+            $imovel_outras_denominacoes_gerais = get_the_terms($post_id, 'outras-denominacoes');
+            $imovel_casas_de_banho_gerais = get_the_terms($post_id, 'casas-de-banho');
+            $imovel_estado_gerais = get_post_meta($post_id, 'imovel_estado_gerais', true);
+            $imovel_mais_filtros_gerais = get_post_meta($post_id, 'imovel_mais_filtros_gerais', true);
+            $imovel_galeria = get_post_meta($post_id, 'imovel_galeria', true);
+            $imovel_andar_gerais = get_post_meta($post_id, 'imovel_andar_gerais', true);
+            $imovel_caracteristicas_especificas = get_post_meta($post_id, 'imovel_caracteristicas_especificas', true);
+            $imovel_certificado_energetico = get_post_meta($post_id, 'imovel_certificado_energetico', true);
             $imovel_lat = get_post_meta($post_id, 'imovel_lat', true);
             $imovel_lng = get_post_meta($post_id, 'imovel_lng', true);
             $imoveis[$post_id] = array(
-                'post_id'                   => $post_id,
-                'title'                     => $title,
-                'thumbnail'                 => $thumbnail,
-                'valor'                     => $imovel_valor,
-                'metragem'                  => $imovel_metragem,
-                'rua'                       => $imovel_rua,
-                'numero'                    => $imovel_numero,
-                'cidade'                    => $imovel_cidade,
-                'estado'                    => $imovel_estado,
-                'codigo_postal'             => $imovel_codigo_postal,
-                'lat'                       => $imovel_lat,
-                'lng'                       => $imovel_lng,
+                'post_id'                                       => $post_id,
+                'post_url'                                      => $post_url,
+                'title'                                         => $title,
+                'thumbnail'                                     => $thumbnail,
+                'galeria'                                       => $imovel_galeria,
+                'valor'                                         => $imovel_valor,
+                'metragem'                                      => $imovel_metragem,
+                'rua'                                           => $imovel_rua,
+                'numero'                                        => $imovel_numero,
+                'cidade'                                        => $imovel_cidade,
+                'estado'                                        => $imovel_estado,
+                'codigo_postal'                                 => $imovel_codigo_postal,
+                'operacao'                                      => $imovel_operacao,
+                'tipologias'                                    => $imovel_tipologias,
+                'caracteristicas_gerais'                        => $imovel_caracteristicas_gerais,
+                'outras_denominacoes_gerais'                    => $imovel_outras_denominacoes_gerais,
+                'casas_de_banho_gerais'                         => $imovel_casas_de_banho_gerais,
+                'estado_gerais'                                 => $imovel_estado_gerais,
+                'mais_filtros_gerais'                           => $imovel_mais_filtros_gerais,
+                'andar_gerais'                                  => $imovel_andar_gerais,
+                'caracteristicas_especificas'                   => $imovel_caracteristicas_especificas,
+                'certificado_energetico'                        => $imovel_certificado_energetico,
+                'lat'                                           => $imovel_lat,
+                'lng'                                           => $imovel_lng,
             );
         }
     }

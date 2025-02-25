@@ -1,6 +1,4 @@
 
-'use strict';
-
 let autocomplete;
 let map;
 let lat = ajax_object.lat;
@@ -13,16 +11,18 @@ console.log(ajax_object);
 
 
 function initMap() {
+    console.log('initMap 1');
     const mapDiv = document.getElementById('map');
     if (typeof (mapDiv) === undefined || !mapDiv) {
         return;
     }
-    console.log('initMap');
+
+    console.log('initMap 2');
     if ((typeof (lat) === undefined || !lat) || (typeof (lng) === undefined || !lng)) {
         return;
     }
-
-
+    console.log('initMap 3');
+    
     lat = Number(lat);
     lng = Number(lng);
     const defaultLocation = { lat, lng };
@@ -45,7 +45,7 @@ function initMap() {
         const itemLocation = LatLng;
         const itemLocationContentString =
             `<div>
-                <h5>${imovel.title}</h5>
+                <h5><a href="${imovel.post_url}">${imovel.title}</a></h5>
                 <address>
                 Endereço: ${imovel.rua}, ${imovel.numero} - ${imovel.cidade} / ${imovel.estado}, ${imovel.codigo_postal}
                 </address>
@@ -80,6 +80,7 @@ function initMap() {
         })(itemLocationMarker, i));
         // markers.push(itemLocationMarker);
         markers[imovel.post_id] = itemLocationMarker;
+        console.log('initMap 4');
     });
 
 }
