@@ -1,6 +1,5 @@
-$branco: #fff;
 :root {
-    --branco: $branco;
+    --branco: #fff;
     --meter-section-cl: #ddd;
     --pwd-str-cl-weak: #ff4d4d;
     --pwd-str-cl-medium: #ffd633;
@@ -9,4 +8,6 @@ $branco: #fff;
     --primary: #0d6efd;
     --primary-light: #cbe1ff;
     --alerta: rgb(155, 31, 31);
+    --amarelo: rgba(242, 228, 0, 1);
+    --roxo: rgba(90, 77, 140, 1);
 }

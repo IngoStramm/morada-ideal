@@ -1,0 +1,13 @@
+.dropdown-toggle {
+    &::after {
+        content: '';
+        display: inline-block;
+        margin-left: .3em;
+        vertical-align: .2em;
+        border: solid var(--roxo);
+        border-width: 0 2px 2px 0;
+        padding: 2.5px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+}

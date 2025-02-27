@@ -10,20 +10,32 @@ $wrapper_classes .= has_nav_menu('primary') ? ' has-menu' : '';
     <nav class="navbar navbar-expand-md" id="first-header-navbar">
         <div class="container">
 
-            <?php get_template_part('template-parts/header/site-header', 'branding'); ?>
+            <div class="col-6 col-md-3 mb-0">
+                <?php get_template_part('template-parts/header/site-header', 'branding'); ?>
+            </div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenuPrincipal" aria-controls="navbarMenuPrincipal" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="nav col-md-auto mb-2 justify-content-center mb-md-0 mb-0">
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarMenuPrincipal" aria-labelledby="navbarMenuPrincipalLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="navbarMenuPrincipalLabel"><?php get_template_part('template-parts/header/site-header', 'branding'); ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <?php get_template_part('template-parts/header/site-header', 'nav'); ?>
+                        <div class="d-block d-md-none">
+                            <?php get_template_part('template-parts/header/site-header', 'login-btn'); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarMenuPrincipal" aria-labelledby="navbarMenuPrincipalLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="navbarMenuPrincipalLabel"><?php get_template_part('template-parts/header/site-header', 'branding'); ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="col-6 col-md-3 text-end d-flex d-md-block justify-content-end">
+                <div class="d-none d-md-block">
+                    <?php get_template_part('template-parts/header/site-header', 'login-btn'); ?>
                 </div>
-                <div class="offcanvas-body">
-                    <?php get_template_part('template-parts/header/site-header', 'nav'); ?>
-                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarMenuPrincipal" aria-controls="navbarMenuPrincipal" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
 
             <?php /* ?>
