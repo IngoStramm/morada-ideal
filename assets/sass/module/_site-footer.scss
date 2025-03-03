@@ -1,0 +1,16 @@
+.site-footer {
+    padding-block: 40px;
+    background-color: var(--roxo);
+    color: var(--cinza-claro);
+    * {
+        color: var(--branco);
+    }
+    a {
+        &:focus,
+        &:active,
+        &:hover,
+        &:active:hover {
+            color: var(--amarelo);
+        }
+    }
+}

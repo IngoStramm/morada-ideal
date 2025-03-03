@@ -353,16 +353,17 @@ function mi_get_page_url($slug)
  *
  * @param  string $key
  * @param  boolean $default
+ * @param  string $option_key
  * @return mixed
  */
-function mi_get_option($key = '', $default = false)
+function mi_get_option($key = '', $default = false, $option_key = 'mi_theme_options')
 {
     if (function_exists('cmb2_get_option')) {
         // Use cmb2_get_option as it passes through some key filters.
-        return cmb2_get_option('mi_theme_options', $key, $default);
+        return cmb2_get_option($option_key, $key, $default);
     }
     // Fallback to get_option if CMB2 is not loaded yet.
-    $opts = get_option('mi_theme_options', $default);
+    $opts = get_option($option_key, $default);
     $val = $default;
     if ('all' == $key) {
         $val = $opts;
@@ -861,4 +862,20 @@ function mi_get_imoveis()
         }
     }
     return $imoveis;
+}
+
+/**
+ * mi_get_field_value
+ *
+ * @param  string $name
+ * @return mixed
+ */
+function mi_get_field_value($name)
+{
+    $value = isset($_POST[$name]) && !is_null($_POST[$name]) ? $_POST[$name] : null;
+    if (!$value) {
+        // retorna uma mensagem de erro com o campo 'success' falso
+        wp_send_json_error(array('msg' => __("Campo \"$name\" não foi passado ou está vazio.", 'cl')), 200);
+    }
+    return $value;
 }

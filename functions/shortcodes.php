@@ -28,7 +28,7 @@ function mi_editor($atts)
     return wp_editor($content, $editor_id, $args);
 }
 
-add_shortcode('mi_contact_form', 'mi_contact_form_shortcode');
+add_shortcode('contact_form', 'mi_contact_form_shortcode');
 
 function mi_contact_form_shortcode($atts)
 {
@@ -72,7 +72,7 @@ function mi_contact_form_shortcode($atts)
                 </div>
 
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary" tabindex="4">' . __('Salvar senha', 'mi') . '</button>
+                    <button type="submit" class="btn btn-primary" tabindex="4">' . __('Enviar', 'mi') . '</button>
                 </div>
 
             </div>
@@ -82,6 +82,40 @@ function mi_contact_form_shortcode($atts)
 
         </form>
         <div id="contact-form-alert-placeholder"></div>';
+
+    return $form;
+}
+
+add_shortcode('newsletter_form', 'mi_newsletter_form_shortcode');
+
+function mi_newsletter_form_shortcode($atts)
+{
+    $a = shortcode_atts(array(
+        'name' => 'mi_editor',
+        'tabindex' => -1,
+        'post_id' => ''
+    ), $atts);
+    $email = '';
+    if (is_user_logged_in()) {
+        $user = wp_get_current_user();
+        $email = $user->user_email;
+    }
+    $mi_add_newsletter_form_nonce = wp_create_nonce('mi_newsletter_form_nonce');
+    $form = '';
+    $form .=
+        '<form class="mi-newsletter-form needs-validation" role="search" action="' . esc_url(admin_url('admin-post.php')) . '" method="post" id="mi-newsletter-form" novalidate>
+
+            <div class="newsletter-input-group">
+                <input type="text" class="form-control newsletter-input" name="email" id="email" value="' . $email . '" placeholder="' . __('Seu endereço de email', 'mi') . '" autocomplete="off" aria-autocomplete="list" aria-label="' . __('E-mail', 'mi') . '" required>
+                <button type="submit" class="newsletter-btn">' . mi_get_icon('arrow') . '</button>
+                <div class="invalid-feedback">' . __('Campo obrigatório', 'mi') . '</div>
+            </div>
+
+            <input type="hidden" name="mi_newsletter_form_nonce" value="' . $mi_add_newsletter_form_nonce . '" />
+            <input type="hidden" value="mi_newsletter_form" name="action">
+
+        </form>
+        <div id="newsletter-form-alert-placeholder"></div>';
 
     return $form;
 }

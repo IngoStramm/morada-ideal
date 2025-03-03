@@ -1,0 +1,14 @@
+.mi-newsletter-form {
+    input[name='email'] {
+        background-color: var(--roxo-claro);
+        color: var(--cinza-claro);
+        border: none;
+        border-radius: 50px;
+        font-size: 12px;
+        line-height: 12px;
+        padding: 14px 20px;
+        &::placeholder {
+            color: var(--cinza-claro);
+        }
+    }
+}

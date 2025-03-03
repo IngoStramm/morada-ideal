@@ -1,45 +1,30 @@
 <?php
 
-add_action('cmb2_admin_init', 'mi_register_theme_options_metabox');
-/**
- * Hook in and register a metabox to handle a theme options page and adds a menu item.
- */
-function mi_register_theme_options_metabox()
+add_action('cmb2_admin_init', 'mi_register_main_options_metabox');
+
+function mi_register_main_options_metabox()
 {
 
-    /**
-     * Registers options page menu item and form.
-     */
     $cmb_options = new_cmb2_box(array(
         'id'           => 'mi_theme_options_page',
         'title'        => esc_html__('Configurações Morada Ideal', 'mi'),
         'object_types' => array('options-page'),
 
-        /*
-		 * The following parameters are specific to the options-page box
-		 * Several of these parameters are passed along to add_menu_page()/add_submenu_page().
-		 */
-
-        'option_key'      => 'mi_theme_options', // The option key and admin menu page slug.
-        'icon_url'        => 'dashicons-admin-generic', // Menu icon. Only applicable if 'parent_slug' is left empty.
-        // 'menu_title'              => esc_html__( 'Options', 'mi' ), // Falls back to 'title' (above).
-        // 'parent_slug'             => 'themes.php', // Make options page a submenu item of the themes menu.
-        // 'capability'              => 'manage_options', // Cap required to view options-page.
-        // 'position'                => 1, // Menu position. Only applicable if 'parent_slug' is left empty.
-        // 'admin_menu_hook'         => 'network_admin_menu', // 'network_admin_menu' to add network-level options page.
-        // 'priority'                => 10, // Define the page-registration admin menu hook priority.
-        // 'display_cb'              => false, // Override the options-page form output (CMB2_Hookup::options_page_output()).
-        // 'save_button'             => esc_html__( 'Save Theme Options', 'mi' ), // The text for the options-page save button. Defaults to 'Save'.
-        // 'disable_settings_errors' => true, // On settings pages (not options-general.php sub-pages), allows disabling.
-        // 'message_cb'              => 'mi_options_page_message_callback',
-        // 'tab_group'               => '', // Tab-group identifier, enables options page tab navigation.
-        // 'tab_title'               => null, // Falls back to 'title' (above).
-        // 'autoload'                => false, // Defaults to true, the options-page option will be autloaded.
+        'option_key'      => 'mi_theme_options',
+        'icon_url'        => 'dashicons-admin-generic',
     ));
 
     $cmb_options->add_field(array(
         'name'    => esc_html__('E-mails que receberão as mensagens do formulário de contato.', 'mi'),
         'id'      => 'mi_contact_form_emails',
+        'type'    => 'text_email',
+        'repeatable'    => true,
+        'required'      => true
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('E-mails que receberão as inscrições de newsletter.', 'mi'),
+        'id'      => 'mi_newsletter_form_emails',
         'type'    => 'text_email',
         'repeatable'    => true,
         'required'      => true
@@ -158,6 +143,38 @@ function mi_register_theme_options_metabox()
     ));
 
     $cmb_options->add_field(array(
+        'name'    => esc_html__('Página Termos de Serviços', 'mi'),
+        'id'      => 'mi_service_terms',
+        'type'    => 'select',
+        'options' => function () {
+            $pages = mi_get_pages();
+            $array = [];
+            $array[''] = __('Selecione uma página', 'mi');
+            foreach ($pages as $id => $title) {
+                $array[$id] = $title;
+            }
+            return $array;
+        },
+        'required'      => true
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Página Política de Cookies', 'mi'),
+        'id'      => 'mi_cookies_policy',
+        'type'    => 'select',
+        'options' => function () {
+            $pages = mi_get_pages();
+            $array = [];
+            $array[''] = __('Selecione uma página', 'mi');
+            foreach ($pages as $id => $title) {
+                $array[$id] = $title;
+            }
+            return $array;
+        },
+        'required'      => true
+    ));
+
+    $cmb_options->add_field(array(
         'name' => esc_html__('Imagem padrão', 'mi'),
         'desc' => esc_html__('A imagem padrão será exibido quando o comprador não definir uma imagem para o anúncio.', 'mi'),
         'id'   => 'mi_anuncio_default_image',
@@ -187,5 +204,112 @@ function mi_register_theme_options_metabox()
         'id'      => 'mapstatic_key',
         'type'    => 'text',
     ));
+}
 
+add_action('cmb2_admin_init', 'mi_register_site_info_options_metabox');
+
+function mi_register_site_info_options_metabox()
+{
+
+    $cmb_options = new_cmb2_box(array(
+        'id'           => 'mi_site_info_options_page',
+        'title'        => esc_html__('Informações da Empresa', 'mi'),
+        'object_types' => array('options-page'),
+        'option_key'      => 'mi_site_info_options',
+        'icon_url'        => 'dashicons-admin-generic',
+        'menu_title'              => esc_html__('Informações da Empresa', 'mi'),
+        'parent_slug'             => 'mi_theme_options',
+    ));
+
+    $cmb_options->add_field(array(
+        'name' => esc_html__('Logo do rodapé', 'mi'),
+        'id'   => 'mi_footer_logo',
+        'type' => 'file',
+        'attributes' => array(
+            'accept' => '.jpg,.jpeg,.png,.svg'
+        )
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Texto curto sobre a empresa', 'mi'),
+        'description'    => 'Texto exibido no rodapé, na coluna com o endereço e dados de contato da empresa.',
+        'id'      => 'mi_company_text',
+        'type'    => 'text',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Endereço da empresa', 'mi'),
+        'id'      => 'mi_company_address',
+        'type'    => 'text',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Telefone da empresa', 'mi'),
+        'id'      => 'mi_company_phone',
+        'type'    => 'text',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('E-mail da empresa', 'mi'),
+        'id'      => 'mi_company_email',
+        'type'    => 'text_email',
+    ));
+}
+
+add_action('cmb2_admin_init', 'mi_register_site_social_media_options_metabox');
+
+function mi_register_site_social_media_options_metabox()
+{
+
+    $cmb_options = new_cmb2_box(array(
+        'id'           => 'mi_site_social_media_options_page',
+        'title'        => esc_html__('Redes Sociais', 'mi'),
+        'object_types' => array('options-page'),
+        'option_key'      => 'mi_site_social_media_options',
+        'icon_url'        => 'dashicons-admin-generic',
+        'menu_title'              => esc_html__('Redes Sociais da Empresa', 'mi'),
+        'parent_slug'             => 'mi_theme_options',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do Facebook da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no Facebook.',
+        'id'      => 'mi_facebook_url',
+        'type'    => 'text_url',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do Linkedin da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no Linkedin.',
+        'id'      => 'mi_linkedin_url',
+        'type'    => 'text_url',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do X (antigo Twitter) da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no X (antigo Twitter).',
+        'id'      => 'mi_x_url',
+        'type'    => 'text_url',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do Pinterest da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no Pinterest.',
+        'id'      => 'mi_pinterest_url',
+        'type'    => 'text_url',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do Instagram da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no Instagram.',
+        'id'      => 'mi_instagram_url',
+        'type'    => 'text_url',
+    ));
+
+    $cmb_options->add_field(array(
+        'name'    => esc_html__('Url do Youtube da Empresa', 'mi'),
+        'description'    => 'Url para o perfil da empresa no Youtube.',
+        'id'      => 'mi_youtube_url',
+        'type'    => 'text_url',
+    ));
 }

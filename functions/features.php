@@ -38,7 +38,8 @@ if (!function_exists('mi_setup')) {
         register_nav_menus(
             array(
                 'primary' => esc_html__('Menu primário', 'mi'),
-                'footer'  => esc_html__('Menu secundário', 'mi'),
+                'footer_cat'  => esc_html__('Menu categorias no rodapé', 'mi'),
+                'footer_company'  => esc_html__('Menu nossa empresa no rodapé', 'mi'),
             )
         );
 

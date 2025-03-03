@@ -22,7 +22,7 @@ function initMap() {
         return;
     }
     console.log('initMap 3');
-    
+
     lat = Number(lat);
     lng = Number(lng);
     const defaultLocation = { lat, lng };
@@ -306,7 +306,6 @@ function miClearInputValue() {
 }
 
 function mi_show_alert(alertPlaceholder, message, type) {
-    console.log(message);
     const wrapper = document.createElement('div');
     wrapper.innerHTML = [
         `<div id="contact-form-alert" class="alert alert-${type} alert-dismissible" role="alert">`,
@@ -317,7 +316,7 @@ function mi_show_alert(alertPlaceholder, message, type) {
     alertPlaceholder.append(wrapper);
 }
 
-function mi_contact_form() {
+function miContactForm() {
     const contactForms = document.querySelectorAll('.mi-contact-form');
     contactForms.forEach(contactForm => {
         contactForm.addEventListener('submit', e => {
@@ -351,6 +350,8 @@ function mi_contact_form() {
 
             const ajaxUrl = ajax_object.ajax_url;
             const data = new FormData(contactForm);
+
+
             const action = data.get('action');
 
             // console.log(data.get('action'));
@@ -367,19 +368,86 @@ function mi_contact_form() {
             })
                 .then((response) => response.json())
                 .then((response) => {
+
                     mi_show_alert(alertPlaceholder, response.data.msg, 'success');
                     nomeInput.value = '';
                     emailInput.value = '';
                     mensagemTextarea.value = '';
                 })
                 .catch((error) => {
-                    console.error(error);
                     mi_show_alert(alertPlaceholder, error, 'danger');
                 })
                 .finally(() => {
                     btn.disabled = false;
                     btn.innerText = originalBtntext;
                     contactForm.classList.remove('was-validated');
+                });
+
+        });
+    });
+}
+
+function miNewsletterForm() {
+    const newsletterForms = document.querySelectorAll('.mi-newsletter-form');
+    newsletterForms.forEach(newsletterForm => {
+        newsletterForm.addEventListener('submit', e => {
+            e.preventDefault();
+
+            if (typeof document.getElementById('newsletter-form-alert') !== undefined && document.getElementById('newsletter-form-alert')) {
+                const newsletterFormAlert = bootstrap.Alert.getOrCreateInstance('#newsletter-form-alert');
+                newsletterFormAlert.close();
+            }
+
+            if (!newsletterForm.checkValidity()) {
+                return;
+            }
+            newsletterForm.classList.add('was-validated');
+
+            const emailInput = newsletterForm.querySelector('#email');
+            const btn = newsletterForm.querySelector('button');
+
+            if (typeof btn === undefined || !btn) {
+                return;
+            }
+
+            if (btn.disabled) {
+                return;
+            }
+            btn.disabled = true;
+            const originalBtntext = btn.innerText;
+            btn.innerText = 'Enviando...';
+
+            const ajaxUrl = ajax_object.ajax_url;
+            const data = new FormData(newsletterForm);
+
+
+            const action = data.get('action');
+
+            // console.log(data.get('action'));
+
+            // for (const [key, value] of data) {
+            //     console.log('data', `${key}: ${value}\n`);
+            // }
+
+            const alertPlaceholder = document.getElementById('newsletter-form-alert-placeholder');
+
+            fetch(ajaxUrl, {
+                method: 'POST',
+                body: data
+            })
+                .then((response) => response.json())
+                .then((response) => {
+
+                    mi_show_alert(alertPlaceholder, response.data.msg, 'success');
+                    emailInput.value = '';
+                })
+                .catch((error) => {
+                    mi_show_alert(alertPlaceholder, error, 'danger');
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerText = originalBtntext;
+                    newsletterForm.classList.remove('was-validated');
                 });
 
         });
@@ -642,7 +710,8 @@ document.addEventListener('DOMContentLoaded', function () {
     miTooltips();
     miFileImagePreview();
     miClearInputValue();
-    mi_contact_form();
+    miContactForm();
+    miNewsletterForm();
     miSortTableList();
     miFaq();
 });

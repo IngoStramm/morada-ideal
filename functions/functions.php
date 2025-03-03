@@ -20,3 +20,5 @@ require_once 'messages.php';
 require_once 'sort.php';
 require_once 'filter.php';
 require_once 'map.php';
+require_once 'contact-form.php';
+require_once 'newsletter-form.php';

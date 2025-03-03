@@ -1,0 +1,36 @@
+.site-social-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    .site-social-media-list {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 10px;
+        li {
+            margin-bottom: 0;
+            padding: 0;
+            a {
+                display: block;
+                transition: all .25s;
+                &:active,
+                &:focus,
+                &:hover,
+                &:focus:hover {
+                    opacity: .75;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .site-social-media {
+        justify-content: flex-end;
+    }
+}

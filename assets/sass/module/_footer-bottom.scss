@@ -1,0 +1,15 @@
+.footer-bottom {
+    font-size: 14px;
+    color: var(--cinza-claro);
+    text-align: center;
+    * {
+        font-size: 14px;
+        color: var(--cinza-claro);
+    }
+}
+
+@media (min-width: 992px) {
+    .footer-bottom {
+        text-align: left;
+    }
+}

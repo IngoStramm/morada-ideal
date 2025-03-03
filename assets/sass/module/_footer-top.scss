@@ -1,0 +1,22 @@
+.footer-top {
+    color: var(--cinza-claro);
+    font-size: 14px;
+    border-bottom: solid var(--borda-footer) 1px;
+    padding-bottom: 30px;
+    // margin-bottom: 20px;
+    .site-logo {
+        display: block;
+        margin-inline: auto;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 764px) {
+    .footer-top {
+        .site-logo {
+            display: block;
+            margin-inline: 0;
+            margin-bottom: 0;
+        }
+    }
+}
