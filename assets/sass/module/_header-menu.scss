@@ -7,7 +7,11 @@
     &.navbar-nav {
         .nav-link {
             &.active,
-            &.show {
+            &.show,
+            &:active,
+            &:hover,
+            &:focus,
+            &:hover:focus {
                 color: var(--roxo);
             }
         }
