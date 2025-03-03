@@ -1,0 +1,15 @@
+.header-menu {
+    a {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--roxo);
+    }
+    &.navbar-nav {
+        .nav-link {
+            &.active,
+            &.show {
+                color: var(--roxo);
+            }
+        }
+    }
+}
