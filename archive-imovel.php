@@ -20,10 +20,10 @@ get_header(); ?>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3 col-md-5">
+        <div class="col-lg-4 col-md-5">
             <?php get_sidebar('sidebar') ?>
         </div>
-        <div class="col-lg-9 col-md-7">
+        <div class="col-lg-8 col-md-7">
             <?php
             if (!isset($_GET['view']) || $_GET['view'] !== 'map') {
                 if (have_posts()) {

@@ -8,6 +8,22 @@ function mi_frontend_scripts()
     $min = (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1', '10.0.0.3'))) ? '' : '.min';
     $version = mi_version();
     $imoveis = mi_get_imoveis();
+    $precos_options = mi_precos_options();
+    $precos_array = [];
+    $precos_array[] = array(0, '0');
+    foreach ($precos_options as $k => $option) {
+        $precos_array[] = array($k, $option);
+    }
+    $metragem_options = mi_metragem_options();
+    $metragem_array = [];
+    $metragem_array[] = array(0, '0');
+    foreach ($metragem_options as $k => $option) {
+        $metragem_array[] = array($k, $option);
+    }
+    $cores = array(
+        'roxo' => 'rgba(90, 77, 140, 1)',
+        'track-color' => '#E7F0FF'
+    );
 
     if (empty($min)) :
         wp_enqueue_script('morada-ideal-livereload', 'http://localhost:35729/livereload.js?snipver=1', array(), null, true);
@@ -29,8 +45,11 @@ function mi_frontend_scripts()
         'ajax_url' => admin_url('admin-ajax.php'),
         'plugin_url' => MI_URL,
         'imoveis' => $imoveis,
+        'precos' => $precos_array,
+        'metragem' => $metragem_array,
         'lat' => isset($_GET['lat']) ? $_GET['lat'] : null,
         'lng' => isset($_GET['lng']) ? $_GET['lng'] : null,
+        'cores' => $cores,
     ));
 
     $gmaps_key = mi_get_option('gmaps_key');

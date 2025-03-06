@@ -219,14 +219,10 @@ function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
     $imovel_rua = isset($_GET['imovel_rua']) && $_GET['imovel_rua'] ? $_GET['imovel_rua'] : null;
     $output = '';
     $output .= '
-    <div class="mb-3 autocomplete-wrapper">
-        <label class="form-label">' . __('Pesquisar endereço', 'mi') . '</label>
-        <div class="input-group">
-            <div class="form-floating">
-                <input type="search" class="form-control form-control-sm search autocomplete" id="autocomplete" name="search" value="' . $search . '" tabindex="17">
-                <label for="autocomplete" class="form-label">' . __('Endereço do imóvel', 'mi') . '</label>
-            </div>
-            <span class="input-group-text">' . mi_get_icon('search') . '</span>
+    <div class="autocomplete-wrapper">
+        <div class="input-group search-address-group">
+            <input type="search" class="form-control form-control-sm search autocomplete" id="autocomplete" name="search" value="' . $search . '" placeholder="' . __('Localização', 'mi') . '">
+            <span class="input-group-text">' . mi_get_icon('target') . '</span>
         </div>
         <div id="autocomplete-message" class="autocomplete-message">' . __('Digite um endereço válido para fazer a pesquisa.', 'mi') . '</div>
         <input type="hidden" value="' . $imovel_lat . '" name="lat" />
@@ -235,6 +231,58 @@ function mi_autocomplete_search_input($imovel_lat = '', $imovel_lng = '')
         <input type="hidden" value="' . $imovel_cidade . '" name="imovel_cidade" />
         <input type="hidden" value="' . $imovel_codigo_postal . '" name="imovel_codigo_postal" />
         <input type="hidden" value="' . $imovel_rua . '" name="imovel_rua" />
+    </div>
+    ';
+    return $output;
+}
+
+/**
+ * mi_range_slider_double_value
+ * 
+ * Referência: @https://medium.com/@predragdavidovic10/native-dual-range-slider-html-css-javascript-91e778134816
+ *
+ * @param  array $values
+ * @param  string $name1
+ * @param  string $name2
+ * @param  int $selected_min_value
+ * @param  int $selected_max_value
+ * @return string
+ */
+function mi_range_slider_double_value($data_id, $values, $name1, $name2, $selected_min_value = 0, $selected_max_value = 0, $label)
+{
+    $values_positions = [];
+    $values_positions[] = '0';
+    foreach ($values as $k => $v) {
+        $values_positions[] = $k;
+    }
+    $max = count($values);
+    if ($selected_max_value === 0) {
+        $selected_max_value = array_key_last($values);
+    }
+    $selected_min_key = 0;
+    if ($selected_min_value !== 0) {
+        $selected_min_key = array_search($selected_min_value, $values_positions);
+    }
+    $selected_max_key = 0;
+    if ($selected_max_value !== 0) {
+        $selected_max_key = array_search($selected_max_value, $values_positions);
+    }
+    $selected_min_value_text = $selected_min_value === 0 ? 0 : $values[$selected_min_value];
+    $selected_max_value_text = $selected_max_value === 0 ? $values[array_key_last($values)] : $values[$selected_max_value];
+    $output = '';
+    $output .= '
+    <div class="range-container" data-array-id="' . $data_id . '">
+        <label>' . $label . ' <span class="text-min-value">' . $selected_min_value_text . '</span> - <span class="text-max-value">' . $selected_max_value_text . '</span>
+        </label>
+
+        <div class="sliders-control">
+            <input id="fromSlider" class="fromSlider" type="range" value="' . $selected_min_key . '" min="0" max="' . $max . '"/>
+            <input id="toSlider" class="toSlider" type="range" value="' . $selected_max_key . '" min="0" max="' . $max . '"/>
+        </div>
+
+        <input class="fromInput" name="' . $name1 . '" type="hidden" id="fromInput" value="' . $selected_min_value . '" />
+        <input class="toInput" name="' . $name2 . '" type="hidden" id="toInput" value="' . $selected_max_value . '" />
+        
     </div>
     ';
     return $output;

@@ -7,11 +7,8 @@ const itemsLista = Object.values(ajax_object.imoveis);
 const todosImoveis = itemsLista;
 const allInfoWindows = [];
 const markers = {};
-console.log(ajax_object);
-
 
 function initMap() {
-    console.log('initMap 1');
     const mapDiv = document.getElementById('map');
     if (typeof (mapDiv) === undefined || !mapDiv) {
         return;
@@ -700,6 +697,123 @@ function miRemoveFaqItem(faq, e) {
     }
 }
 
+function miRangeSliderDoubleValue() {
+
+    function getArrayKey(k, dataId) {
+        const listArray = ajax_object[dataId];
+        const currK = k > 0 ? k : 0;
+        return listArray[currK][0];
+    }
+    function getArrayValue(k, dataId) {
+        const listArray = ajax_object[dataId];
+        const valuesArray = [];
+        listArray.forEach((item, i) => {
+            valuesArray[i] = item[1];
+        });
+        const currK = k > 0 ? k : 0;
+        return valuesArray[currK];
+    }
+    function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+        const [from, to] = getParsed(fromInput, toInput);
+        fillSlider(fromInput, toInput, '#E7F0FF', 'rgba(90, 77, 140, 1)', controlSlider);
+        if (from > to) {
+            fromSlider.value = to;
+            fromInput.value = to;
+        } else {
+            fromSlider.value = from;
+        }
+    }
+
+    function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+        const [from, to] = getParsed(fromInput, toInput);
+        fillSlider(fromInput, toInput, '#E7F0FF', 'rgba(90, 77, 140, 1)', controlSlider);
+        setToggleAccessible(toInput);
+        if (from <= to) {
+            toSlider.value = to;
+            toInput.value = to;
+        } else {
+            toInput.value = from;
+        }
+    }
+
+    function controlFromSlider(fromSlider, toSlider, fromInput, textMinValue, dataId) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        fillSlider(fromSlider, toSlider, '#E7F0FF', 'rgba(90, 77, 140, 1)', toSlider);
+        if (from > to) {
+            fromSlider.value = to;
+            fromInput.value = getArrayKey(to, dataId);
+            textMinValue.innerText = getArrayValue(to, dataId);
+
+        } else {
+            fromInput.value = getArrayKey(from, dataId);
+            textMinValue.innerText = getArrayValue(from, dataId);
+        }
+    }
+
+    function controlToSlider(fromSlider, toSlider, toInput, textMaxValue, dataId) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        fillSlider(fromSlider, toSlider, '#E7F0FF', 'rgba(90, 77, 140, 1)', toSlider);
+        setToggleAccessible(toSlider);
+        if (from <= to) {
+            toSlider.value = to;
+            toInput.value = getArrayKey(to, dataId);
+            textMaxValue.innerText = getArrayValue(to, dataId);
+        } else {
+            toInput.value = getArrayKey(from, dataId);
+            toSlider.value = from;
+            textMaxValue.innerText = getArrayValue(from, dataId);
+        }
+    }
+
+    function getParsed(currentFrom, currentTo) {
+        const from = parseInt(currentFrom.value, 10);
+        const to = parseInt(currentTo.value, 10);
+        return [from, to];
+    }
+
+    function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+        const rangeDistance = to.max - to.min;
+        const fromPosition = from.value - to.min;
+        const toPosition = to.value - to.min;
+        controlSlider.style.background = `linear-gradient(
+      to right,
+      ${sliderColor} 0%,
+      ${sliderColor} ${(fromPosition) / (rangeDistance) * 100}%,
+      ${rangeColor} ${((fromPosition) / (rangeDistance)) * 100}%,
+      ${rangeColor} ${(toPosition) / (rangeDistance) * 100}%, 
+      ${sliderColor} ${(toPosition) / (rangeDistance) * 100}%, 
+      ${sliderColor} 100%)`;
+    }
+
+    function setToggleAccessible(currentTarget) {
+        const toSlider = document.querySelector('#toSlider');
+        if (Number(currentTarget.value) <= 0) {
+            toSlider.style.zIndex = 2;
+        } else {
+            toSlider.style.zIndex = 0;
+        }
+    }
+
+    const rangeContainers = document.querySelectorAll('.range-container');
+    rangeContainers.forEach(rangeContainer => {
+        const fromSlider = rangeContainer.querySelector('.fromSlider');
+        const toSlider = rangeContainer.querySelector('.toSlider');
+        const fromInput = rangeContainer.querySelector('.fromInput');
+        const toInput = rangeContainer.querySelector('.toInput');
+        const textMinValue = rangeContainer.querySelector('.text-min-value');
+        const textMaxValue = rangeContainer.querySelector('.text-max-value');
+        const dataId = rangeContainer.getAttribute('data-array-id');
+
+        fillSlider(fromSlider, toSlider, '#E7F0FF', 'rgba(90, 77, 140, 1)', toSlider);
+        setToggleAccessible(toSlider);
+
+        fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput, textMinValue, dataId);
+        toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput, textMaxValue, dataId);
+        fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
+        toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     miFormsValidation();
     miPasswordStrength();
@@ -714,6 +828,7 @@ document.addEventListener('DOMContentLoaded', function () {
     miNewsletterForm();
     miSortTableList();
     miFaq();
+    miRangeSliderDoubleValue();
 });
 
 function miNormalizeText(input) {

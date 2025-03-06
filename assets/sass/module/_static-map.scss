@@ -1,0 +1,16 @@
+.static-map-container {
+    position: relative;
+    padding-bottom: 40px;
+    .static-map {
+        border-radius: 15px;
+        border: 1px solid var(--cinza-mais-claro);
+    }
+    .btn {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 40px;
+        transform: translate(0, 50%);
+        z-index: 1;
+    }
+}

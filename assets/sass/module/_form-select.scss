@@ -1,0 +1,18 @@
+.form-select {
+    background-color: var(--branco);
+    border: 1px solid var(--borda-input);
+    border-radius: 25px;
+    font-size: 14px;
+    padding: 15px 20px;
+    &.search-address-input {
+        background-color: var(--branco);
+        border: 1px solid var(--borda-input);
+        border-radius: 25px;
+        font-size: 14px;
+        padding: 15px 20px;
+    }
+    &.minor-radius {
+        padding: 10px 15px;
+        border-radius: 10px;
+    }
+}

@@ -1,0 +1,28 @@
+.sidebar-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid var(--cinza-mais-claro);
+    border-radius: 20px;
+    margin-bottom: 20px;
+    .widget-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .btn {
+        padding: 12px 24px;
+    }
+    &:last-child {
+        margin-bottom: 0;
+    }
+    .widget-item {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+        gap: 5px;
+    }
+}

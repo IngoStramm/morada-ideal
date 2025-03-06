@@ -1,0 +1,29 @@
+.checkbox-list-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    .btn-check:checked + .btn,
+    .btn.active,
+    .btn.show,
+    .btn:first-child:active,
+    :not(.btn-check) + .btn:active {
+        --bs-btn-color: var(--roxo);
+        --bs-btn-bg: var(--cinza-mais-claro);
+        background-color: var(--cinza-mais-claro);
+        --bs-btn-border-color: var(--cinza-claro);
+        --bs-btn-hover-color: var(--roxo);
+        --bs-btn-hover-bg: var(--cinza-claro);
+        --bs-btn-hover-border-color: var(--cinza-claro);
+        --bs-btn-active-color: var(--roxo);
+        --bs-btn-active-bg: var(--cinza-claro);
+        --bs-btn-active-border-color: var(--cinza-claro);
+        --bs-btn-disabled-color: var(--roxo);
+        --bs-btn-disabled-bg: var(-cinza-mais-claro);
+        --bs-btn-disabled-border-color: var(-cinza-mais-claro);
+    }
+}

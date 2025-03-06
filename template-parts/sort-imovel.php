@@ -12,13 +12,6 @@ $start_date = isset($_GET['start-date']) && $_GET['start-date'] ? $_GET['start-d
 $end_date = isset($_GET['end-date']) && $_GET['end-date'] ? $_GET['end-date'] : null;
 
 $prices = mi_get_imoveis_by_price();
-// mi_debug($prices);
-$css_display = 'flex';
-if ($post_type === 'anuncios' && ($prices && count($prices) > 0)) {
-    $css_display = 'block';
-    $max = max($prices);
-    $min = min($prices);
-}
 $sort_params = mi_sort_params();
 $filter_params =  mi_filters_params();
 
@@ -26,19 +19,21 @@ $filter_params =  mi_filters_params();
 $full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $reset_url = mi_remove_url_parameters($full_url, $sort_params);
 ?>
-<form class="sort-form d-md-<?php echo $css_display; ?> align-items-center justify-content-between gap-3 w-100" name="sort-form" method="get">
+<form class="sort-form d-md-flex align-items-center justify-content-end gap-3 w-100" name="sort-form" method="get">
 
     <div class="d-flex justify-content-end  align-items-center gap-3">
-        <select class="form-select" name="orderby" aria-label="<?php _e('Ordenar anúncios', 'mi'); ?>">
-            <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Selecione uma opção', 'mi'); ?></option>
+        <select class="form-select minor-radius" name="orderby" aria-label="<?php _e('Ordenar', 'mi'); ?>">
+            <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Ordenar', 'mi'); ?></option>
             <?php foreach ($order_options as $value => $text) { ?>
                 <option value="<?php echo $value; ?>" <?php echo $selected === $value ? 'selected=""' : '' ?>><?php echo $text; ?></option>
             <?php } ?>
         </select>
-        <i class="bi bi-arrow-down-up"></i>
+        <?php /* ?><i class="bi bi-arrow-down-up"></i><?php */ ?>
     </div>
 
-    <div class="d-md-<?php echo $css_display; ?> justify-content-start align-items-center gap-3 mb-4 mb-md-0">
+    <?php /* ?>
+
+    <div class="d-md-flex justify-content-start align-items-center gap-3 mb-4 mb-md-0">
 
         <label class="form-label flex-shrink-0 mb-0" for="start-date">
             <?php _e('Data inicial', 'mi'); ?>
@@ -57,6 +52,8 @@ $reset_url = mi_remove_url_parameters($full_url, $sort_params);
         </span>
 
     </div>
+
+    <?php */ ?>
 
     <?php
     echo mi_add_query_params_as_inputs($filter_params);
