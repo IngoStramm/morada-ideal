@@ -19,19 +19,22 @@ $filter_params =  mi_filters_params();
 $full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $reset_url = mi_remove_url_parameters($full_url, $sort_params);
 ?>
-<form class="sort-form d-md-flex align-items-center justify-content-end gap-3 w-100" name="sort-form" method="get">
+<?php echo mi_get_breadcrumbs(); ?>
+<div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between gap-3 w-100">
+    <h4><?php echo mi_total_imoveis_sort_message(); ?></h4>
+    <form class="sort-form d-flex  flex-column flex-md-row align-items-md-center justify-content-end gap-3" name="sort-form" method="get">
 
-    <div class="d-flex justify-content-end  align-items-center gap-3">
-        <select class="form-select minor-radius" name="orderby" aria-label="<?php _e('Ordenar', 'mi'); ?>">
-            <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Ordenar', 'mi'); ?></option>
-            <?php foreach ($order_options as $value => $text) { ?>
-                <option value="<?php echo $value; ?>" <?php echo $selected === $value ? 'selected=""' : '' ?>><?php echo $text; ?></option>
-            <?php } ?>
-        </select>
-        <?php /* ?><i class="bi bi-arrow-down-up"></i><?php */ ?>
-    </div>
+        <div class="d-flex justify-content-end  align-items-center gap-3">
+            <select class="form-select minor-radius" name="orderby" aria-label="<?php _e('Ordenar', 'mi'); ?>">
+                <option value="" <?php echo !$selected ? ' selected' : ''; ?>><?php _e('Ordenar', 'mi'); ?></option>
+                <?php foreach ($order_options as $value => $text) { ?>
+                    <option value="<?php echo $value; ?>" <?php echo $selected === $value ? 'selected=""' : '' ?>><?php echo $text; ?></option>
+                <?php } ?>
+            </select>
+            <?php /* ?><i class="bi bi-arrow-down-up"></i><?php */ ?>
+        </div>
 
-    <?php /* ?>
+        <?php /* ?>
 
     <div class="d-md-flex justify-content-start align-items-center gap-3 mb-4 mb-md-0">
 
@@ -55,10 +58,11 @@ $reset_url = mi_remove_url_parameters($full_url, $sort_params);
 
     <?php */ ?>
 
-    <?php
-    echo mi_add_query_params_as_inputs($filter_params);
-    // echo mi_search_params();
-    ?>
-    <button class="btn btn-primary"><?php _e('Ordenar', 'mi'); ?></button>
+        <?php
+        echo mi_add_query_params_as_inputs($filter_params);
+        // echo mi_search_params();
+        ?>
+        <button class="btn btn-primary"><?php _e('Ordenar', 'mi'); ?></button>
 
-</form>
+    </form>
+</div>

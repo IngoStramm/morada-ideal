@@ -1,0 +1,9 @@
+$breadcrumb-divider: quote('>');
+
+.breadcrumb {
+    font-size: 14px;
+    color: var(--roxo);
+    a {
+       color: var(--roxo); 
+    }
+}

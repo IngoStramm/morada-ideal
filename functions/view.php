@@ -287,3 +287,21 @@ function mi_range_slider_double_value($data_id, $values, $name1, $name2, $select
     ';
     return $output;
 }
+
+/**
+ * mi_total_imoveis_sort_message
+ *
+ * @return string
+ */
+function mi_total_imoveis_sort_message()
+{
+    global $wp_query;
+    if (!is_main_query() || is_admin() || $wp_query->get('post_type') === 'nav_menu_item') {
+        return;
+    }
+    $post_count = $wp_query->post_count;
+    $search_term = $wp_query->query_vars['search'];
+    $output = '';
+    $output .= sprintf(__('%s imóveis encontrados em %s', 'mi'), $post_count, $search_term);
+    return $output;
+}
