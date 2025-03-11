@@ -897,3 +897,20 @@ function mi_get_field_value($name)
     }
     return $value;
 }
+
+/**
+ * mi_format_money
+ *
+ * @param  mixed $number
+ * @return string
+ */
+function mi_format_money($number, $decimal = 0)
+{
+    if (!is_numeric($number)) {
+        throw new InvalidArgumentException('The input must be a numeric value.');
+    }
+
+    $number = floatval($number);
+
+    return number_format($number, $decimal, ',', '.');
+}

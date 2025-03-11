@@ -300,8 +300,8 @@ function mi_total_imoveis_sort_message()
         return;
     }
     $post_count = $wp_query->post_count;
-    $search_term = $wp_query->query_vars['search'];
+    $search_term = isset($wp_query->query_vars['search']) && $wp_query->query_vars['search'] ? $wp_query->query_vars['search'] : null;
     $output = '';
-    $output .= sprintf(__('%s imóveis encontrados em %s', 'mi'), $post_count, $search_term);
+    $output .= $search_term ? sprintf(__('%s imóveis encontrados em %s', 'mi'), $post_count, $search_term) : sprintf(__('%s imóveis encontrados', 'mi'), $post_count);
     return $output;
 }

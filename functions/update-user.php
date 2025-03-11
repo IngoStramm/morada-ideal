@@ -53,6 +53,10 @@ function mi_update_user_form_handle()
 
     $user_password = (isset($_POST['user_pass']) && $_POST['user_pass']) ? $_POST['user_pass'] : null;
 
+    $user_phone = (isset($_POST['user_phone']) && $_POST['user_phone']) ? $_POST['user_phone'] : null;
+
+    $user_avatar = isset($_FILES['user_avatar']) && $_FILES['user_avatar'] && isset($_FILES['user_avatar']['name']) && $_FILES['user_avatar']['name'] ? $_FILES['user_avatar'] : null;
+
     $userdata = array();
     $userdata['ID'] = $user_id;
 
@@ -84,6 +88,68 @@ function mi_update_user_form_handle()
         exit;
     }
 
+    if ($user_phone) {
+        $updated_user_phone = update_user_meta($update_user_result, 'mi_user_phone', $user_phone);
+    }
+
+    if ($user_avatar) {
+        $file = $user_avatar;
+        $filename = $file['name'];
+        $file_size = $file['size'];
+        $file_tmp_name = $file['tmp_name'];
+        $user_avatar_url = '';
+        if ($file_size > 2097152) {
+            $_SESSION['mi_update_user_error_message'] = sprintf(__('O arquivo %s é muito pesado, o tamanho máximo permitido é de 2MB..', 'mi'), $filename);
+            wp_safe_redirect($account_page_url);
+            exit;
+        }
+        $upload_file = wp_upload_bits($filename, null, @file_get_contents($file_tmp_name));
+        // exit;
+        if (!$upload_file['error']) {
+            // Check the type of file. We'll use this as the 'post_mime_type'.
+            $filetype = wp_check_filetype($filename, null);
+
+            // Get the path to the upload directory.
+            $wp_upload_dir = wp_upload_dir();
+
+            // Prepare an array of post data for the attachment.
+            $attachment = array(
+                'post_mime_type' => $filetype['type'],
+                'post_title'     => preg_replace('/\.[^.]+$/', '', $filename),
+                'post_content'   => '',
+                'post_status'    => 'inherit',
+            );
+
+            // Insert the attachment.
+            $attach_id = wp_insert_attachment($attachment, $upload_file['file']);
+
+            if (!is_wp_error($attach_id)) {
+                // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+                // Generate the metadata for the attachment, and update the database record.
+                $attach_data = wp_generate_attachment_metadata($attach_id, $upload_file['file']);
+                wp_update_attachment_metadata($attach_id, $attach_data);
+
+                $user_avatar_url = wp_get_attachment_url($attach_id);
+            } else {
+                $_SESSION['mi_update_user_error_message'] = $attach_id->get_error_message();
+                wp_safe_redirect($account_page_url);
+                exit;
+            }
+        } else {
+            $_SESSION['mi_update_user_error_message'] = sprintf(__('Ocorreu um erro ao tentar fazer o upload do arquivo %s.', 'mi'), $filename);
+            wp_safe_redirect($account_page_url);
+            exit;
+        }
+        $updated_user_avatar = update_user_meta($update_user_result, 'mi_user_avatar', $user_avatar_url);
+        if (!$updated_user_avatar) {
+            $_SESSION['mi_update_user_error_message'] = __('Ocorreu um erro ao tentar atualizar o avatar do usuário.', 'mi');
+            wp_safe_redirect($account_page_url);
+            exit;
+        }
+    }
+
     $user = get_user_by('id', $update_user_result);
 
     $_SESSION['mi_update_user_success_message'] = wp_sprintf(__('Dados do usuário %s atualizados com sucesso!', 'mi'), $user->display_name);
@@ -105,7 +171,7 @@ function mi_update_user_error_message()
 {
     // Mensagens de erro de atualização do usuário
     if (isset($_SESSION['mi_update_user_error_message']) && $_SESSION['mi_update_user_error_message']) {
-        echo mi_dismissible_alert('danger', $_SESSION['mi_update_user_error_message']);
+        echo mi_dismissible_alert($_SESSION['mi_update_user_error_message'], 'danger');
         unset($_SESSION['mi_update_user_error_message']);
     }
 }
@@ -121,7 +187,7 @@ function mi_update_user_success_message()
 {
     // Mensagens de successo de atualização do usuário
     if (isset($_SESSION['mi_update_user_success_message']) && $_SESSION['mi_update_user_success_message']) {
-        echo mi_dismissible_alert('success', $_SESSION['mi_update_user_success_message']);
+        echo mi_dismissible_alert($_SESSION['mi_update_user_success_message'], 'success');
         unset($_SESSION['mi_update_user_success_message']);
     }
 }

@@ -61,7 +61,7 @@ function mi_get_breadcrumbs()
         } else if (is_search() || $search) {
             $output .= '<li class="breadcrumb-item active" aria-current="page">' . $search . '</li>';
         } else if (is_archive() && ! is_category()) {
-            $output .= '<li class="breadcrumb-item active" aria-current="page">' . __('Arquivo', 'mi') . '</li>';
+            $output .= '<li class="breadcrumb-item active" aria-current="page">' . __('Imóveis', 'mi') . '</li>';
         } else if (is_404()) {
             $output .= '<li class="breadcrumb-item active" aria-current="page">' . __('404 Não Encontrado', 'mi') . '</li>';
         } else if (is_singular()) {
