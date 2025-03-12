@@ -91,6 +91,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                .imovel-preco {
+                    color: var(--roxo);
+                    font-size: 18px;
+                    font-weight: 500;
+                }
             }
         }
     }

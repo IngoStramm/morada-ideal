@@ -62,4 +62,12 @@
         padding-block: 14px;
         color: var(--amarelo);
     }
+    &.has-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5em;
+        svg {
+        }
+    }
 }

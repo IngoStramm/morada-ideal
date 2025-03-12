@@ -205,7 +205,7 @@ $lista_view_url = mi_remove_url_parameters($full_url, array('view'));
         echo mi_add_query_params_as_inputs($sort_params);
         // echo mi_search_params();
         ?>
-        <button class="btn btn-primary"><?php _e('Filtrar', 'mi'); ?></button>
-        <a class="btn btn-secondary" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?></a>
+        <button class="btn btn-primary has-icon"><?php _e('Filtrar', 'mi'); ?> <?php echo mi_get_icon('arrow-right'); ?></button>
+        <a class="btn btn-warning has-icon" href="<?php echo $reset_url; ?>"><?php _e('Resetar filtro', ' mi') ?> <?php echo mi_get_icon('close-alt'); ?></a>
     </div>
 </form>

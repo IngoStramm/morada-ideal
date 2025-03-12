@@ -37,7 +37,7 @@ $imovel_certificado_energetico = get_post_meta($post_id, 'imovel_certificado_ene
     <div class="imovel-list-item-content">
         <h5 class="imovel-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h5>
         <ul class="imovel-detalhes">
-            <li><span><?php echo mi_get_icon('map-pin-alt'); ?><?php echo $imovel_estado; ?>,</span> <?php echo $imovel_cidade; ?></li>
+            <li><span><?php echo mi_get_icon('map-pin-alt'); ?><?php echo $imovel_estado; ?>, <?php echo $imovel_cidade; ?></span></li>
             <li><span><?php echo mi_get_icon('bed'); ?><?php _e('Quartos', 'mi'); ?><strong><?php echo $imovel_tipologia[0]->name; ?></strong></span><span><?php echo mi_get_icon('bath'); ?><?php _e('Casa de banho', 'mi'); ?><strong><?php echo $imovel_casas_banho[0]->name; ?></strong></span><span><?php echo mi_get_icon('triangle'); ?><?php _e('Área', 'mi') ?><strong><?php echo $imovel_metragem; ?>m²</strong></span></li>
             <?php /* ?><li><?php echo $valor_por_metro; ?> €/m²</li><?php */ ?>
         </ul>
