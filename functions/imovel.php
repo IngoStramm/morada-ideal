@@ -87,6 +87,7 @@ function mi_imovel_form_handle()
     if (!isset($_POST['regiao-terms']) || !$_POST['regiao-terms']) {
 
         $_SESSION['mi_imovel_error_message'] = __('Região(ões) inválida(s).', 'mi');
+        // mi_debug($_POST);
         wp_safe_redirect($edit_novo_imovel_link);
         exit;
     }
@@ -102,11 +103,35 @@ function mi_imovel_form_handle()
 
     if (!isset($_POST['imovel_area_bruta']) || !$_POST['imovel_area_bruta']) {
 
-        $_SESSION['mi_imovel_error_message'] = __('Metragem inválida.', 'mi');
+        $_SESSION['mi_imovel_error_message'] = __('Área bruta inválida.', 'mi');
         wp_safe_redirect($edit_novo_imovel_link);
         exit;
     }
     $imovel_area_bruta = isset($_POST['imovel_area_bruta']) && $_POST['imovel_area_bruta'] ? $_POST['imovel_area_bruta'] : null;
+
+    if (!isset($_POST['imovel_area_util']) || !$_POST['imovel_area_util']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Área bruta inválida.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_area_util = isset($_POST['imovel_area_util']) && $_POST['imovel_area_util'] ? $_POST['imovel_area_util'] : null;
+
+    if (!isset($_POST['imovel_ano']) || !$_POST['imovel_ano']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Ano inválido.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_ano = isset($_POST['imovel_ano']) && $_POST['imovel_ano'] ? $_POST['imovel_ano'] : null;
+
+    if (!isset($_POST['imovel_garagens']) || !$_POST['imovel_garagens']) {
+
+        $_SESSION['mi_imovel_error_message'] = __('Garagem inválida.', 'mi');
+        wp_safe_redirect($edit_novo_imovel_link);
+        exit;
+    }
+    $imovel_garagens = isset($_POST['imovel_garagens']) && $_POST['imovel_garagens'] ? $_POST['imovel_garagens'] : null;
 
     if (!isset($_POST['tipologia-terms']) || !$_POST['tipologia-terms']) {
 
@@ -254,7 +279,10 @@ function mi_imovel_form_handle()
         // ),
         'meta_input' => array(
             'imovel_valor' =>   $price,
+            'imovel_garagens' => $imovel_garagens,
             'imovel_area_bruta' => $imovel_area_bruta,
+            'imovel_area_util' => $imovel_area_util,
+            'imovel_ano' => $imovel_ano,
             'imovel_caracteristicas_especificas' => $imovel_caracteristicas_especificas,
             'imovel_certificado_energetico' => $imovel_certificado_energetico,
             'imovel_rua' => $imovel_rua,

@@ -231,7 +231,7 @@ $check_imovel_date = mi_check_imovel_date($post_id);
 
 
             </div>
-            <div class="col-lg-5 col-xl-4">
+            <div class="col-lg-5 col-xl-4 mt-4 mt-lg-0">
                 <?php get_sidebar('single-archive') ?>
             </div>
         </div>
