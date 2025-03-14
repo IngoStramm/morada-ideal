@@ -184,7 +184,7 @@ function mi_filter_query($wp_query)
     }
     if ($metragem_imovel_min) {
         $filters_meta[] = array(
-            'key' => 'imovel_metragem',
+            'key' => 'imovel_area_bruta',
             'value' => floatval($metragem_imovel_min),
             'compare' => '>=',
             'type' => 'numeric'
@@ -192,7 +192,7 @@ function mi_filter_query($wp_query)
     }
     if ($metragem_imovel_max) {
         $filters_meta[] = array(
-            'key' => 'imovel_metragem',
+            'key' => 'imovel_area_bruta',
             'value' => floatval($metragem_imovel_max),
             'compare' => '<=',
             'type' => 'numeric'

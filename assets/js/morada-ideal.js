@@ -451,6 +451,80 @@ function miNewsletterForm() {
     });
 }
 
+function miAnuncianteContactForm() {
+    const contactForms = document.querySelectorAll('.mi-anunciante-contact-form');
+    contactForms.forEach(contactForm => {
+        contactForm.addEventListener('submit', e => {
+            e.preventDefault();
+
+            if (typeof document.getElementById('anunciante-contact-form-alert') !== undefined && document.getElementById('anunciante-contact-form-alert')) {
+                const contactFormAlert = bootstrap.Alert.getOrCreateInstance('#anunciante-contact-form-alert');
+                contactFormAlert.close();
+            }
+
+            if (!contactForm.checkValidity()) {
+                return;
+            }
+            contactForm.classList.add('was-validated');
+
+            const nomeInput = contactForm.querySelector('#nome');
+            const phoneInput = contactForm.querySelector('#phone');
+            const emailInput = contactForm.querySelector('#email');
+            const mensagemTextarea = contactForm.querySelector('#mensagem');
+            const btn = contactForm.querySelector('button');
+
+            if (typeof btn === undefined || !btn) {
+                return;
+            }
+
+            if (btn.disabled) {
+                return;
+            }
+            btn.disabled = true;
+            const originalBtntext = btn.innerText;
+            btn.innerText = 'Enviando...';
+
+            const ajaxUrl = ajax_object.ajax_url;
+            const data = new FormData(contactForm);
+
+
+            const action = data.get('action');
+
+            // console.log(data.get('action'));
+
+            // for (const [key, value] of data) {
+            //     console.log('data', `${key}: ${value}\n`);
+            // }
+
+            const alertPlaceholder = document.getElementById('anunciante-contact-form-alert-placeholder');
+
+            fetch(ajaxUrl, {
+                method: 'POST',
+                body: data
+            })
+                .then((response) => response.json())
+                .then((response) => {
+
+                    mi_show_alert(alertPlaceholder, response.data.msg, 'success');
+                    nomeInput.value = '';
+                    phoneInput.value = '';
+                    emailInput.value = '';
+                    mensagemTextarea.value = '';
+                })
+                .catch((error) => {
+                    mi_show_alert(alertPlaceholder, error, 'danger');
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerText = originalBtntext;
+                    contactForm.classList.remove('was-validated');
+                });
+
+        });
+    });
+}
+
+
 function miSortTableList() {
 
     const defaultOptions = {
@@ -814,6 +888,22 @@ function miRangeSliderDoubleValue() {
     });
 }
 
+function tooglePreviewContent() {
+    const togglePreviews = document.querySelectorAll('.toogle-preview');
+    togglePreviews.forEach((previewContent) => {
+        const tooglePreviewContent = previewContent.querySelector('.toogle-preview-content');
+        const togglebtn = previewContent.querySelector('.toogle-preview-btn');
+        togglebtn.addEventListener('click', e => {
+            e.preventDefault();
+            const previousText = togglebtn.innerText;
+            const newText = togglebtn.getAttribute('data-text');
+            tooglePreviewContent.classList.toggle('expanded');
+            togglebtn.innerText = newText;
+            togglebtn.setAttribute('data-text', previousText);
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     miFormsValidation();
     miPasswordStrength();
@@ -826,9 +916,11 @@ document.addEventListener('DOMContentLoaded', function () {
     miClearInputValue();
     miContactForm();
     miNewsletterForm();
+    miAnuncianteContactForm();
     miSortTableList();
     miFaq();
     miRangeSliderDoubleValue();
+    tooglePreviewContent();
 });
 
 function miNormalizeText(input) {

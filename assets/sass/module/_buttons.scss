@@ -1,6 +1,6 @@
 .btn {
     border-radius: 50px;
-    font-weight: bold;
+    font-weight: 500;
     &.btn-primary {
         --bs-btn-color: var(--branco);
         --bs-btn-bg: var(--roxo);
@@ -66,8 +66,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: .5em;
-        svg {
+        gap: 0.5em;
+        &.btn-warning {
+            svg {
+                path {
+                    stroke: var(--roxo);
+                }
+            }
         }
     }
 }

@@ -1,0 +1,76 @@
+.imovel-single-overview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0 0 40px;
+    padding: 0;
+    list-style: none;
+    gap: 40px 20px;
+    li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 0.2em;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 14px;
+            line-height: 1.2em;
+            color: var(--cinza);
+            li {
+                font-size: inherit;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .imovel-single-overview {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: stretch;
+        li {
+            width: calc(50% - 10px);
+            ul {
+                li {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .imovel-single-overview {
+        li {
+            width: calc(33.33% - 14px);
+            ul {
+                li {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .imovel-single-overview {
+        li {
+            width: calc(25% - 15px);
+            ul {
+                li {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

@@ -44,7 +44,19 @@ function mi_register_imovel_metabox()
 
     $cmb->add_field(array(
         'name'       => esc_html__('Metragem² área bruta', 'mi'),
-        'id'         => 'imovel_metragem',
+        'id'         => 'imovel_area_bruta',
+        'type'       => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name'       => esc_html__('Metragem² área útil', 'mi'),
+        'id'         => 'imovel_area_util',
+        'type'       => 'text',
+    ));
+
+    $cmb->add_field(array(
+        'name'       => esc_html__('Ano de construção', 'mi'),
+        'id'         => 'imovel_ano',
         'type'       => 'text',
     ));
 
@@ -116,6 +128,13 @@ function mi_register_imovel_metabox()
         'id'               => 'imovel_certificado_energetico',
         'type'             => 'select',
         'options'          => 'mi_certificado_energetico_options',
+    ));
+
+    $cmb->add_field(array(
+        'name'             => esc_html__('Garagens', 'mi'),
+        'id'               => 'imovel_garagens',
+        'type'             => 'select',
+        'options'          => 'mi_garagens_options',
     ));
 
     $cmb->add_field(array(

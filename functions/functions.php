@@ -23,3 +23,5 @@ require_once 'map.php';
 require_once 'contact-form.php';
 require_once 'newsletter-form.php';
 require_once 'breadcrumb.php';
+require_once 'imovel-modal-gallery.php';
+require_once 'contact-anunciante-form.php';

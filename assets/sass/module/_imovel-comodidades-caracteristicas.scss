@@ -1,0 +1,26 @@
+.imovel-comodidades-caracteristicas {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px 15px;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    margin: 0 0 20px;
+    list-style-position: inside;
+    color: var(--cinza);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2em;
+}
+
+@media (min-width: 768px) {
+    .imovel-comodidades-caracteristicas {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        li {
+            width: calc(33.33% - 10px);
+        }
+    }
+}

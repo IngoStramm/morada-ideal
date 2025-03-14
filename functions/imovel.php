@@ -100,13 +100,13 @@ function mi_imovel_form_handle()
     }
     $caracteristicas_gerais_term_id = isset($_POST['caracteristicas-gerais-terms']) && $_POST['caracteristicas-gerais-terms'] ? $_POST['caracteristicas-gerais-terms'] : null;
 
-    if (!isset($_POST['imovel_metragem']) || !$_POST['imovel_metragem']) {
+    if (!isset($_POST['imovel_area_bruta']) || !$_POST['imovel_area_bruta']) {
 
         $_SESSION['mi_imovel_error_message'] = __('Metragem inválida.', 'mi');
         wp_safe_redirect($edit_novo_imovel_link);
         exit;
     }
-    $imovel_metragem = isset($_POST['imovel_metragem']) && $_POST['imovel_metragem'] ? $_POST['imovel_metragem'] : null;
+    $imovel_area_bruta = isset($_POST['imovel_area_bruta']) && $_POST['imovel_area_bruta'] ? $_POST['imovel_area_bruta'] : null;
 
     if (!isset($_POST['tipologia-terms']) || !$_POST['tipologia-terms']) {
 
@@ -254,7 +254,7 @@ function mi_imovel_form_handle()
         // ),
         'meta_input' => array(
             'imovel_valor' =>   $price,
-            'imovel_metragem' => $imovel_metragem,
+            'imovel_area_bruta' => $imovel_area_bruta,
             'imovel_caracteristicas_especificas' => $imovel_caracteristicas_especificas,
             'imovel_certificado_energetico' => $imovel_certificado_energetico,
             'imovel_rua' => $imovel_rua,

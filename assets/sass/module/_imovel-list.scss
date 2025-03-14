@@ -44,35 +44,6 @@
                     text-decoration: none;
                 }
             }
-            .imovel-detalhes {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                align-items: flex-start;
-                justify-content: center;
-                gap: 5px;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                font-size: inherit;
-                color: inherit;
-                li {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: flex-start;
-                    gap: 1.5em;
-                    font-size: inherit;
-                    color: inherit;
-                    span {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: flex-start;
-                        gap: 0.3em;
-                    }
-                }
-            }
             .imovel-resumo {
                 display: block;
                 max-width: 100%;

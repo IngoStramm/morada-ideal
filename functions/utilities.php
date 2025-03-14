@@ -831,7 +831,7 @@ function mi_get_imoveis()
             $title = get_the_title($post_id);
             $thumbnail = get_the_post_thumbnail_url($post_id, 'medium');
             $imovel_valor = get_post_meta($post_id, 'imovel_valor', true);
-            $imovel_metragem = get_post_meta($post_id, 'imovel_metragem', true);
+            $imovel_area_bruta = get_post_meta($post_id, 'imovel_area_bruta', true);
             $imovel_rua = get_post_meta($post_id, 'imovel_rua', true);
             $imovel_numero = get_post_meta($post_id, 'imovel_numero', true);
             $imovel_cidade = get_post_meta($post_id, 'imovel_cidade', true);
@@ -858,7 +858,7 @@ function mi_get_imoveis()
                 'thumbnail'                                     => $thumbnail,
                 'galeria'                                       => $imovel_galeria,
                 'valor'                                         => $imovel_valor,
-                'metragem'                                      => $imovel_metragem,
+                'metragem'                                      => $imovel_area_bruta,
                 'rua'                                           => $imovel_rua,
                 'numero'                                        => $imovel_numero,
                 'cidade'                                        => $imovel_cidade,
@@ -913,4 +913,26 @@ function mi_format_money($number, $decimal = 0)
     $number = floatval($number);
 
     return number_format($number, $decimal, ',', '.');
+}
+
+/**
+ * mi_garagens_options
+ *
+ * @return array
+ */
+function mi_garagens_options()
+{
+    $options = array(
+        '1'             => esc_html__('1', 'mi'),
+        '2'             => esc_html__('2', 'mi'),
+        '3'             => esc_html__('3', 'mi'),
+        '4'             => esc_html__('4', 'mi'),
+        '5'             => esc_html__('5', 'mi'),
+        '6'             => esc_html__('6', 'mi'),
+        '7'             => esc_html__('7', 'mi'),
+        '8'             => esc_html__('8', 'mi'),
+        '9'             => esc_html__('9', 'mi'),
+        '9+'            => esc_html__('Mais de 9', 'mi'),
+    );
+    return $options;
 }

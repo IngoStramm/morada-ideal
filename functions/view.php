@@ -305,3 +305,53 @@ function mi_total_imoveis_sort_message()
     $output .= $search_term ? sprintf(__('%s imóveis encontrados em %s', 'mi'), $post_count, $search_term) : sprintf(__('%s imóveis encontrados', 'mi'), $post_count);
     return $output;
 }
+
+/**
+ * mi_overview_list_item_text
+ *
+ * @param  string $item
+ * @param  string $icon
+ * @param  string $text
+ * @return string
+ */
+function mi_overview_list_item_text($item, $icon, $text)
+{
+    $output = '';
+    $output .= '
+        <li>' . mi_get_icon($icon) . '
+            <ul>
+                <li>' . $text . '</li>';
+    $output .= '<li><strong>' . $item . '</strong></li>';
+    $output .= '
+            </ul>
+        </li>';
+    return $output;
+}
+
+/**
+ * mi_overview_list_item_term
+ *
+ * @param  array $terms
+ * @param  string $icon
+ * @param  string $text
+ * @return string
+ */
+function mi_overview_list_item_term($terms, $icon, $text)
+{
+    $output = '';
+    if ($terms) {
+        $output .= '
+        <li>' . mi_get_icon($icon) . '
+            <ul>
+                <li>' . $text . '</li>';
+        foreach ($terms as $term) {
+            if (!$term->parent) {
+                $output .= '<li><strong>' . $term->name . '</strong></li>';
+            }
+        }
+        $output .= '
+            </ul>
+        </li>';
+    }
+    return $output;
+}

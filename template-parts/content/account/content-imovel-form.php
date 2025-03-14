@@ -60,7 +60,7 @@ $mi_add_form_new_imovel_nonce = wp_create_nonce('mi_form_imovel_nonce');
 $post = get_post($post_id);
 $title = $post_id ? get_the_title($post_id) : null;
 $price = $post_id ? get_post_meta($post_id, 'imovel_valor', true) : null;
-$metragem = $post_id ? get_post_meta($post_id, 'imovel_metragem', true) : null;
+$metragem = $post_id ? get_post_meta($post_id, 'imovel_area_bruta', true) : null;
 $imovel_galeria = $post_id ? get_post_meta($post_id, 'imovel_galeria', true) : array();
 $imovel_rua = $post_id ? get_post_meta($post_id, 'imovel_rua', true) : null;
 $imovel_lat = $post_id ? get_post_meta($post_id, 'imovel_lat', true) : null;
@@ -216,8 +216,8 @@ $imovel_caracteristicas_especificas = $post_id ? get_post_meta($post_id, 'imovel
                         </div>
 
                         <div class="mb-3">
-                            <label for="imovel_metragem" class="form-label"><?php _e('Metragem² área bruta', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
-                            <input type="number" min="0" class="form-control" id="imovel_metragem" name="imovel_metragem" tabindex="8" value="<?php echo $metragem; ?>" required>
+                            <label for="imovel_area_bruta" class="form-label"><?php _e('Metragem² área bruta', 'mi'); ?><span class="text-danger" data-bs-toggle="tooltip" data-bs-title="<?php _e('Campo obrigatório.', 'mi'); ?>">*</span></label>
+                            <input type="number" min="0" class="form-control" id="imovel_area_bruta" name="imovel_area_bruta" tabindex="8" value="<?php echo $metragem; ?>" required>
                             <div class="invalid-feedback"><?php _e('Campo obrigatório', 'mi'); ?></div>
                         </div>
 

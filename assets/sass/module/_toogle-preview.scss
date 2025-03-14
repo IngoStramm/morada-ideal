@@ -1,0 +1,39 @@
+.toogle-preview {
+    .toogle-preview-content {
+        position: relative;
+        height: 80px;
+        overflow: hidden;
+        transition: height 0.4s ease;
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background: rgb(255, 255, 255);
+            background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(0, 212, 255, 0) 100%
+            );
+        }
+        &.expanded {
+            height: auto;
+            &::after {
+                display: none;
+            }
+        }
+    }
+    .toogle-preview-btn {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--roxo);
+        text-decoration: none;
+        border-bottom: 2px solid var(--roxo);
+        padding-bottom: 0.1em;
+        margin-bottom: 0.2em;
+    }
+}

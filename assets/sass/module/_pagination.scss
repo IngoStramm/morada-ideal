@@ -1,0 +1,20 @@
+.pagination {
+    border-radius: 0;
+    gap: 10px;
+    .page-link {
+        color: var(--roxo);
+        border-radius: 8px;
+        font-weight: 700;
+        padding: 10px 16px;
+    }
+    .active > .page-link,
+    .page-link.active {
+        background-color: var(--roxo);
+        border-color: var(--roxo);
+        color: var(--branco);
+    }
+    .page-item:first-child .page-link,
+    .page-item:last-child .page-link {
+        border-radius: 8px;
+    }
+}
