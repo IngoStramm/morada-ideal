@@ -971,6 +971,12 @@ function miInitAutocomplete() {
     });
 }
 
+function miSetInputsNewValue(inputs, newValue) {
+    inputs.forEach(input => {
+        input.value = newValue;
+    });
+}
+
 function miOnPlaceChanged(autocompleteMessage) {
 
     let place = autocomplete.getPlace();
@@ -983,14 +989,16 @@ function miOnPlaceChanged(autocompleteMessage) {
         return;
     }
 
-    const latInput = miAutocompleteForm.querySelector('input[name="lat"]');
-    const lngInput = miAutocompleteForm.querySelector('input[name="lng"]');
-    const stateInput = miAutocompleteForm.querySelector('input[name="imovel_estado"]');
-    const cidadeInput = miAutocompleteForm.querySelector('input[name="imovel_cidade"]');
-    const cepInput = miAutocompleteForm.querySelector('input[name="imovel_codigo_postal"]');
-    const imovelRua = miAutocompleteForm.querySelector('input[name="imovel_rua"]');
+    const latInput = miAutocompleteForm.querySelectorAll('input[name="lat"]');
+    const lngInput = miAutocompleteForm.querySelectorAll('input[name="lng"]');
+    const stateInput = miAutocompleteForm.querySelectorAll('input[name="imovel_estado"]');
+    const cidadeInput = miAutocompleteForm.querySelectorAll('input[name="imovel_cidade"]');
+    const cepInput = miAutocompleteForm.querySelectorAll('input[name="imovel_codigo_postal"]');
+    const imovelRua = miAutocompleteForm.querySelectorAll('input[name="imovel_rua"]');
     const autocompleteFormBtn = document.getElementById('new-imovel-form-btn');
     let regiaoTerms = '';
+    console.log('imovelRua', imovelRua);
+
 
     if (typeof autocompleteFormBtn !== undefined && autocompleteFormBtn) {
         autocompleteFormBtn.setAttribute('disabled', '');
@@ -1012,20 +1020,12 @@ function miOnPlaceChanged(autocompleteMessage) {
 
     if (!place.geometry) {
         document.getElementById('autocomplete').placeholder = 'Digite um endereço';
-        latInput.value = '';
-        lngInput.value = '';
-        if (typeof stateInput !== undefined && tateInput) {
-            stateInput.value = '';
-        }
-        if (typeof cidadeInput !== undefined && cidadeInput) {
-            cidadeInput.value = '';
-        }
-        if (typeof cepInput !== undefined && cepInput) {
-            cepInput.value = '';
-        }
-        if (typeof imovelRua !== undefined && imovelRua) {
-            imovelRua.value = '';
-        }
+        miSetInputsNewValue(latInput, '');
+        miSetInputsNewValue(lngInput, '');
+        miSetInputsNewValue(stateInput, '');
+        miSetInputsNewValue(cidadeInput, '');
+        miSetInputsNewValue(cepInput, '');
+        miSetInputsNewValue(imovelRua, '');
         autocompleteMessage.style.display = 'block';
         if (typeof autocompleteFormBtn !== undefined && autocompleteFormBtn) {
             autocompleteFormBtn.setAttribute('disabled', '');
@@ -1055,21 +1055,16 @@ function miOnPlaceChanged(autocompleteMessage) {
         // console.log('estado', estado[0].short_name);
         // console.log('cidade', cidade[0].short_name);
         document.getElementById('autocomplete').innerHTML = place.name;
-        latInput.value = lat;
-        lngInput.value = lng;
-        if (typeof stateInput !== undefined && stateInput) {
-            stateInput.value = estado[0]?.short_name ? estado[0]?.short_name : '';
-        }
-        if (typeof cidadeInput !== undefined && cidadeInput) {
-            cidadeInput.value = cidade[0]?.short_name ? cidade[0]?.short_name : '';
-        }
-        if (typeof cepInput !== undefined && cepInput) {
-            cepInput.value = cep[0]?.short_name ? cep[0]?.short_name : '';
-        }
-
-        if (typeof imovelRua !== undefined && imovelRua) {
-            imovelRua.value = rua[0]?.long_name ? rua[0]?.long_name : '';
-        }
+        miSetInputsNewValue(latInput, lat);
+        miSetInputsNewValue(lngInput, lng);
+        const newStateValue = estado[0]?.short_name ? estado[0]?.short_name : '';
+        miSetInputsNewValue(stateInput, newStateValue);
+        const newCidadeValue = cidade[0]?.short_name ? cidade[0]?.short_name : '';
+        miSetInputsNewValue(cidadeInput, newCidadeValue);
+        const newCepValue = cep[0]?.short_name ? cep[0]?.short_name : '';
+        miSetInputsNewValue(cepInput, newCepValue);
+        const newRuaValue = rua[0]?.long_name ? rua[0]?.long_name : '';
+        miSetInputsNewValue(imovelRua, newRuaValue);
 
         const regiaoTable = document.getElementById('table-regiao-imoveis');
         if (typeof regiaoTable !== undefined && regiaoTable) {

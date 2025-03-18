@@ -27,6 +27,7 @@ get_header(); ?>
             <div class="imovel-list">
                 <?php
                 if (!isset($_GET['view']) || $_GET['view'] !== 'map') {
+                    
                     if (have_posts()) {
                         // Load posts loop.
                         while (have_posts()) {

@@ -27,6 +27,7 @@ $imovel_galeria = get_post_meta($post_id, 'imovel_galeria', true);
 $imovel_galeria_id = get_post_meta($post_id, '_imovel_galeria_id', true);
 $imovel_caracteristicas_especificas = get_post_meta($post_id, 'imovel_caracteristicas_especificas', true);
 $imovel_certificado_energetico = get_post_meta($post_id, 'imovel_certificado_energetico', true);
+
 ?>
 
 <div class="imovel-list-item">

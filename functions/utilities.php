@@ -431,6 +431,9 @@ function mi_atualiza_termos($terms_id, $post_id, $tax_slug)
  */
 function mi_calcula_valor_por_metro($valor, $metro)
 {
+    if (!$valor || !$metro) {
+        return 0;
+    }
     if (is_string($valor)) {
         $valor_formatado = str_replace('.', '', $valor);
         $valor_formatado = str_replace(',', '.', $valor_formatado);
@@ -906,6 +909,9 @@ function mi_get_field_value($name)
  */
 function mi_format_money($number, $decimal = 0)
 {
+    if (!$number) {
+        return '0,00';
+    }
     if (!is_numeric($number)) {
         throw new InvalidArgumentException('The input must be a numeric value.');
     }
